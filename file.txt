@@ -1,15 +1,21 @@
 //make a folder name it whatever you want
 mkdir gmboybusiness
+
 //cd into folder
 cd gmboybusiness
+
 //initialize git to track the folder you creted
 git init
+
 //this adds our repoistory the the pull command
 git remote add origin https://github.com/ProjectLambros/ProjectRoot.git
+
 // this makes sure that all commit and pushes will be to our repository
 git push -u origin master
+
 //pulls all files in Project Lambros
 git pull origin master
+
 //if you have done this before and just want to see differences from your version and the one on the web
 git diff HEAD
 .
@@ -21,13 +27,21 @@ add files and do changes and stuffs
 .
 //stage your files to be uploaded
 git add <files>
+
 //will store message and get it ready for final push
 git commit -m "DIS IS MAH MESSAGE ABOUT THIS I DID"
+
 //check dah log
 git log
+
 //check whats being staged and whats changed and needs to be staged and such
 git status
+
 //finally do this after you have added and commited your stuff
 git push
-//done
+
+//done (I think this is all add changes as neccessary)
+
+//branching is something we will do towards the end of our project so that when we make changes it doesnt break everything
+
 

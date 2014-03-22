@@ -8,11 +8,15 @@ body {background-image:url('https://csce.uark.edu/~raw013/PICS/BG.png');}
     margin: 0 auto; 
     position:relative;
 }     
-
+.img{position:absolute;
+z-index:1;
+left: 3.5px;
+}
 #screen{
     border: 1px solid green;
     position:relative;
     top: 56px;
+    z-index: 20;
     margin:3px; 
     padding:2px; 
     image-rendering:-webkit-optimizeSpeed;

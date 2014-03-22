@@ -38,7 +38,7 @@ git log
 git status
 
 //finally do this after you have added and commited your stuff
-git push
+git push origin master
 
 //done (I think this is all add changes as neccessary)
 

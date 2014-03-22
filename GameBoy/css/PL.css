@@ -1,1 +1,25 @@
 body {background-image:url('https://csce.uark.edu/~raw013/PICS/BG.png');}
+
+#container{
+    display:inline-block;
+    width:320px; 
+    height:480px;
+    background: none; 
+    margin: 0 auto; 
+    position:relative;
+}     
+
+#screen{
+    border: 1px solid green;
+    position:relative;
+    top: 56px;
+    margin:3px; 
+    padding:2px; 
+    image-rendering:-webkit-optimizeSpeed;
+}
+.center {
+ text-align: center;
+ float: center;
+ margin: 0px auto;
+}
+ 

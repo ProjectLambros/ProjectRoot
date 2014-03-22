@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -9,7 +8,19 @@
 <link rel="stylesheet" type="text/css" href="css/PL.css" />
 </head>
 <body>
-
-
+<div class ="center">
+<h3>Project Lambros: GameBoy Emulator</h3><br/>
+<div id="container">
+<canvas id="screen" width="160" height="144">
+Your browser does not support the HTML5 canvas tag.</canvas>
+</div>
+</div>
+<script>
+var Output = "Debug Output Goes Here";
+var c=document.getElementById("screen");
+var ctx=c.getContext("2d");
+ctx.font="10px Arial";
+ctx.fillText(Output,10,50);
+</script>
 </body>
 </html>

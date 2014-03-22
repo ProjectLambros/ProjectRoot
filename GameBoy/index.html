@@ -3,11 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <title>Project Lambros: JavaScript GameBoy Emulator</title>
-<script src="js/CPU.js" type="application/x-javascript"></script>
-<script src="js/debugCPU.js" type="application/x-javascript"></script>
+<script src="js/CPU.js" type="application/javascript"></script>
+<script src="js/debugCPU.js" type="application/javascript"></script>
 <link rel="stylesheet" type="text/css" href="css/PL.css" />
 </head>
-<body>
+<body onload="Canvas()">
 <div class ="center">
 <h3>Project Lambros: GameBoy Emulator</h3><br/>
 <div id="container">
@@ -16,12 +16,6 @@
 Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
 </div>
-<script>
-var Output = "Debug Output Goes Here";
-var c=document.getElementById("screen");
-var ctx=c.getContext("2d");
-ctx.font="10px Arial";
-ctx.fillText(Output,10,50);
-</script>
+
 </body>
 </html>

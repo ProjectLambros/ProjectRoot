@@ -19,6 +19,22 @@ var ZF=0,	// Zero Flag
 var T1=0; 	// temp registers
 var T2=0;
 
+// Convert 8 bit numbers into JavaScript signed integers
+// Z80's negative numbers are two's complement
+function sb(n){return (n>127)?((n&127)-128):n;}
+
+// Left zero fill until length of s = l
+function zf(s,l) {while (s.length<l)s='0'+s;return s;}
+
+// Convert decimal to hexadecimal
+function hex(n){return (n*1).toString(16).toUpperCase();}
+function hex2(n) {return zf(hex(n),2);};
+function hex4(n) {return zf(hex(n),4);};
+
+// Convert decimal to binary
+function bin(n){return (n*1).toString(2);}
+
+
 var DAAtable = []; // DAA Table initialization
 
 // OpCode Arrays

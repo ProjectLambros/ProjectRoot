@@ -35,11 +35,12 @@ function hex4(n) {return zf(hex(n),4);};
 function bin(n){return (n*1).toString(2);}
 
 
+
 var DAAtable = []; // DAA Table initialization
 
-// OpCode Arrays
-var OP=[], OPCB=[]; // Opcodes
-var MN=[], MNCB=[]; // Mnemonics
+// Opcode Arrays
+var OP=[], OPcb=[]; // Opcodes
+var MN=[], MNcb=[]; // Mnemonics
 
 for (var i=0;i<=0xFF;i++) {
   MN[i]=function() { return 'DB 0x'+hex2(MEMR(PC))+'; unknown'; };
@@ -61,7 +62,10 @@ function DAA() { //DAA Table usage
   'FC=(T1>>4)&1;'+
   'CPUticks=4;';
 }
-
+/*
+Decimal Adjust register A. This instruction adjusts register A so that the
+correct representation of Binary Coded Decimal (BCD) is obtained.
+*/
 var DAAtable= [ // DAA table. I'm pretty sure There is a better way to do this. If anyone figures it out, please refactor this...
   0x0080,0x0100,0x0200,0x0300,0x0400,0x0500,0x0600,0x0700,
   0x0800,0x0900,0x1020,0x1120,0x1220,0x1320,0x1420,0x1520,
@@ -325,11 +329,11 @@ OP[0x27]=new Function(DAA()); // DAA in opcode
 
 
 
-OPCB[0x27]=new Function(gb_CPU_SLA_R('RA',8)); // SLA A   op 27's OPCB
+OPcb[0x27]=new Function(gb_CPU_SLA_R('RA',8)); // SLA A   op 27's OPcb
 
 
 MN[0x27]=function(){ return 'DAA'; }; //DAA in mnemonic
 
 
 
-MNCB[0x27]=function(){ return 'SLA A'; }; //op 27's MNCB
+MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb

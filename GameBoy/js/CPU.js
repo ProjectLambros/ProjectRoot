@@ -50,18 +50,29 @@ for (var i=0;i<=0xFF;i++) {
 
 function DAA() { //DAA Table usage
   return ''+
-  'T1=RA;'+
-  'if(FC)T1|=256;'+
-  'if(FH)T1|=512;'+
-  'if(FN)T1|=1024;'+
+  'T1=rA;'+
+  'if(CF)T1|=256;'+
+  'if(HF)T1|=512;'+
+  'if(SF)T1|=1024;'+
   'T1=DAAtable[T1];'+
   'RA=T1>>8;'+
-  'FZ=(T1>>7)&1;'+
-  'FN=(T1>>6)&1;'+
-  'FH=(T1>>5)&1;'+
-  'FC=(T1>>4)&1;'+
+  'ZF=(T1>>7)&1;'+
+  'SF=(T1>>6)&1;'+
+  'HF=(T1>>5)&1;'+
+  'CF=(T1>>4)&1;'+
   'CPUticks=4;';
 }
+
+
+function SLA_R(R, C) {
+  return ''+
+  'CF=('+R+'>>7)&1;'+
+  ''+R+'=('+R+'<<1)&0xFF;'+
+  'SF=HF=0;'+
+  'ZF=('+R+'==0);'+
+  'CPUTicks='+C+';';
+}
+
 /*
 Decimal Adjust register A. This instruction adjusts register A so that the
 correct representation of Binary Coded Decimal (BCD) is obtained.
@@ -329,7 +340,7 @@ OP[0x27]=new Function(DAA()); // DAA in opcode
 
 
 
-OPcb[0x27]=new Function(gb_CPU_SLA_R('RA',8)); // SLA A   op 27's OPcb
+OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
 
 
 MN[0x27]=function(){ return 'DAA'; }; //DAA in mnemonic

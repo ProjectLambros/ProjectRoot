@@ -106,8 +106,15 @@ OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); gbCPUTicks=12; }; //LD BC, u16
 OP[0x04]=new Function(gb_CPU_INC('rB',4));//Inc B
 OP[0x05]=new Function (gb_CPU_DEC('rB',4)); //Dec B
 OP[0x06]=function(){rB=MEMR(PC++); gbCPUTicks=8}; //LD B, u8
-OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0; gbCPUTicks=4;}; //RLCA (this needs explaining)
-
+OP[0x07]=function(){CF=(rA>>7)&1; rA=((rA<<1)&0xFF)|CF; NF=HF=0; ZF=rA==0; gbCPUTicks=4;}; //RLCA (this needs explaining)
+//OP[0x08]
+//OP[0x09]
+OP[0x0A]=function(){rA=MEMR(((rB & 0x00FF)<<8) | RC); gbCPUTicks=8;} //LD A, BC
+OP[0x0B]=function(){var bc=((rB<<8)+rC-1)&0xFFFF; rB=bc&0xFF; gbCPUTicks=8;} //DEC BC
+OP[0x0C]=new Function(gb_CPU_INC('rC',4)); //INC C
+OP[0x0D]=new Function(gb_CPU_DEC('rC',4)); //DEC C
+OP[0x0E]=function(){rC=MEMR(PC++); gbCPUTicks=8}; //LD C, u8
+OP[0x0F]=function(){CF=rA&1; rA=(rA>>1)|(CF<<7); NF=0; HF=0; ZF=rA==0; gbCPUTicks=4 } //RRCA
 
 
 OP[0x27]=new Function(DAA()); // DAA in opcode

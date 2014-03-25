@@ -21,7 +21,7 @@ var T2=0;
 
 var GBhalt = false;
 var gbPause = true;
-var gbCPUTicks = 0;
+var CPUTicks = 0;
 var DAAtable = []; // DAA Table initialization
 
 // Convert 8 bit numbers into JavaScript signed integers
@@ -62,7 +62,7 @@ function DAA() { //DAA Table usage
   'SF=(T1>>6)&1;'+
   'HF=(T1>>5)&1;'+
   'CF=(T1>>4)&1;'+
-  'gbCPUticks=4;';
+  'CPUticks=4;';
 }
 
 
@@ -72,41 +72,41 @@ function SLA_R(R, C) {
   ''+R+'=('+R+'<<1)&0xFF;'+
   'SF=HF=0;'+
   'ZF=('+R+'==0);'+
-  'gbCPUTicks='+C+';';
+  'CPUTicks='+C+';';
 }
 
-function gb_CPU_INC(R, C){
+function CPU_INC(R, C){
 	return ''+
 	  ''+R+'=(++'+R+')&0xFF;'+
 	  'ZF=('+R+'==0);'+
 	  'SF=0;'+
 	  'HF=('+R+'&0xF)==0;'+
-	  'gbCPUTicks='+C+';';
+	  'CPUTicks='+C+';';
 }
 
-function gb_CPU_DEC(R, C){
+function CPU_DEC(R, C){
 	return ''+
 	  ''+R+'=(--'+R+')&0xFF;'+
 	  'ZF=('+R+'==0);'+
 	  'SF=0;'+
 	  'HF=('+R+'&0xF)==0xF;'+
-	  'gbCPUTicks=4;';
+	  'CPUTicks=4;';
 }
 
-function gb_CPU_NOP() {
-	gbCPUTicks=0;
+function CPU_NOP() {
+	CPUTicks=0;
 }
 
 
 //Opcodes
-OP[0x00]=gb_CPU_NOP(); //nop
-OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); gbCPUTicks=12; }; //LD BC, u16 
+OP[0x00]=CPU_NOP(); //nop
+OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); CPUTicks=12; }; //LD BC, u16 
 //OP[0x02]
 //OP[0x03]
-OP[0x04]=new Function(gb_CPU_INC('rB',4));//Inc B
-OP[0x05]=new Function (gb_CPU_DEC('rB',4)); //Dec B
-OP[0x06]=function(){rB=MEMR(PC++); gbCPUTicks=8}; //LD B, u8
-OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0; gbCPUTicks=4;}; //RLCA (this needs explaining)
+OP[0x04]=new Function(CPU_INC('rB',4));//Inc B
+OP[0x05]=new Function (CPU_DEC('rB',4)); //Dec B
+OP[0x06]=function(){rB=MEMR(PC++); CPUTicks=8}; //LD B, u8
+OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0; CPUTicks=4;}; //RLCA (this needs explaining)
 
 
 

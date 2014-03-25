@@ -21,7 +21,7 @@ var T2=0;
 
 var GBhalt = false;
 var gbPause = true;
-var gbCPUTicks = 0;
+var CPUTicks = 0;
 var DAAtable = []; // DAA Table initialization
 
 // Convert 8 bit numbers into JavaScript signed integers
@@ -50,6 +50,7 @@ for (var i=0;i<=0xFF;i++) {
   MNcb[i]=function() { return 'DW 0xCB'+hex2(MEMR(PC+1)); };
 }
 
+
 function DAA() { //DAA Table usage
   return ''+
   'T1=rA;'+
@@ -62,47 +63,40 @@ function DAA() { //DAA Table usage
   'SF=(T1>>6)&1;'+
   'HF=(T1>>5)&1;'+
   'CF=(T1>>4)&1;'+
-  'gbCPUticks=4;';
+  'CPUticks=4;';
 }
 
 
-function SLA_R(R, C) {
-  return ''+
-  'CF=('+R+'>>7)&1;'+
-  ''+R+'=('+R+'<<1)&0xFF;'+
-  'SF=HF=0;'+
-  'ZF=('+R+'==0);'+
-  'gbCPUTicks='+C+';';
-}
 
-function gb_CPU_INC(R, C){
+function CPU_INC(R, C){
 	return ''+
 	  ''+R+'=(++'+R+')&0xFF;'+
 	  'ZF=('+R+'==0);'+
 	  'SF=0;'+
 	  'HF=('+R+'&0xF)==0;'+
-	  'gbCPUTicks='+C+';';
+	  'CPUTicks='+C+';';
 }
 
-function gb_CPU_DEC(R, C){
+function CPU_DEC(R, C){
 	return ''+
 	  ''+R+'=(--'+R+')&0xFF;'+
 	  'ZF=('+R+'==0);'+
 	  'SF=0;'+
 	  'HF=('+R+'&0xF)==0xF;'+
-	  'gbCPUTicks=4;';
+	  'CPUTicks=4;';
 }
 
-function gb_CPU_NOP() {
-	gbCPUTicks=0;
+function CPU_NOP() {
+	CPUTicks=0;
 }
 
 
 //Opcodes
-OP[0x00]=gb_CPU_NOP(); //nop
-OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); gbCPUTicks=12; }; //LD BC, u16 
+OP[0x00]=CPU_NOP(); //nop
+OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); CPUTicks=12; }; //LD BC, u16 
 //OP[0x02]
 //OP[0x03]
+<<<<<<< HEAD
 OP[0x04]=new Function(gb_CPU_INC('rB',4));//Inc B
 OP[0x05]=new Function (gb_CPU_DEC('rB',4)); //Dec B
 OP[0x06]=function(){rB=MEMR(PC++); gbCPUTicks=8}; //LD B, u8
@@ -115,11 +109,47 @@ OP[0x0C]=new Function(gb_CPU_INC('rC',4)); //INC C
 OP[0x0D]=new Function(gb_CPU_DEC('rC',4)); //DEC C
 OP[0x0E]=function(){rC=MEMR(PC++); gbCPUTicks=8}; //LD C, u8
 OP[0x0F]=function(){CF=rA&1; rA=(rA>>1)|(CF<<7); NF=0; HF=0; ZF=rA==0; gbCPUTicks=4 } //RRCA
+=======
+OP[0x04]=new Function(CPU_INC('rB',4));//Inc B
+OP[0x05]=new Function (CPU_DEC('rB',4)); //Dec B
+OP[0x06]=function(){rB=MEMR(PC++); CPUTicks=8}; //LD B, u8
+OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0; CPUTicks=4;}; //RLCA (this needs explaining)
+
+>>>>>>> d3aef595015915ead62f79a1816175456205d3b1
 
 
 OP[0x27]=new Function(DAA()); // DAA in opcode
 
+
+
+function CPU_RLC(n) {
+  CF=(n>>7)&1;
+  n=((n<<1)&0xFF)|CF;
+  SF=HF=0;
+  ZF=(n==0);
+  CPUTicks=8;
+  return n;
+}
+function SLA_R(R, C) {
+  return ''+
+  'CF=('+R+'>>7)&1;'+
+  ''+R+'=('+R+'<<1)&0xFF;'+
+  'SF=HF=0;'+
+  'ZF=('+R+'==0);'+
+  'CPUTicks='+C+';';
+}
+
 //opcode controller bank? maybe
+OPcb[0x00]=function(){ rB=CPU_RLC(rB); };
+OPcb[0x01]=function(){ rC=CPU_RLC(rC); };
+OPcb[0x02]=function(){ rD=CPU_RLC(rD); };
+OPcb[0x03]=function(){ rE=CPU_RLC(rE); };
+OPcb[0x04]=function(){ HL=(HL&0x00FF)|(CPU_RLC(HL>>8)<<8); };
+OPcb[0x05]=function(){ HL=(HL&0xFF00)|CPU_RLC(HL&0xFF); };
+OPcb[0x06]=function(){ MEMW(HL,CPU_RLC(MEMR(HL))); CPUTicks+=8; };
+OPcb[0x07]=function(){ rA=CPU_RLC(rA); };
+
+
 OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
 
 

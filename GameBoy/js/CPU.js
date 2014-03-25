@@ -50,6 +50,18 @@ for (var i=0;i<=0xFF;i++) {
   MNcb[i]=function() { return 'DW 0xCB'+hex2(MEMR(PC+1)); };
 }
 
+
+function CPU_RLC(n) {
+  CF=(n>>7)&1;
+  n=((n<<1)&0xFF)|CF;
+  SF=HF=0;
+  ZF=(n==0);
+  CPUTicks=8;
+  return n;
+}
+
+
+
 function DAA() { //DAA Table usage
   return ''+
   'T1=rA;'+
@@ -113,6 +125,16 @@ OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0;
 OP[0x27]=new Function(DAA()); // DAA in opcode
 
 //opcode controller bank? maybe
+OPcb[0x00]=function(){ rB=CPU_RLC(rB); };
+OPcb[0x01]=function(){ rC=CPU_RLC(rC); };
+OPcb[0x02]=function(){ rD=CPU_RLC(rD); };
+OPcb[0x03]=function(){ rE=CPU_RLC(rE); };
+OPcb[0x04]=function(){ HL=(HL&0x00FF)|(CPU_RLC(HL>>8)<<8); };
+OPcb[0x05]=function(){ HL=(HL&0xFF00)|CPU_RLC(HL&0xFF); };
+OPcb[0x06]=function(){ MEMW(HL,CPU_RLC(MEMR(HL))); CPUTicks+=8; };
+OPcb[0x07]=function(){ rA=CPU_RLC(rA); };
+
+
 OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
 
 

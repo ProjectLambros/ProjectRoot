@@ -13,11 +13,16 @@ var PC=0; 	// Program Counter
 
 var ZF=0,	// Zero Flag
 	HF=0,	// Half Flag
-	SF=0,	// sub Flag
+	SF=0,	// sub Flag FN
 	CF=0;	// Carry flag
 
 var T1=0; 	// temp registers
 var T2=0;
+
+var GBhalt = false;
+var gbPause = true;
+var gbCPUTicks = 0;
+var DAAtable = []; // DAA Table initialization
 
 // Convert 8 bit numbers into JavaScript signed integers
 // Z80's negative numbers are two's complement
@@ -35,17 +40,14 @@ function hex4(n) {return zf(hex(n),4);};
 function bin(n){return (n*1).toString(2);}
 
 
-
-var DAAtable = []; // DAA Table initialization
-
 // Opcode Arrays
 var OP=[], OPcb=[]; // Opcodes
 var MN=[], MNcb=[]; // Mnemonics
 
 for (var i=0;i<=0xFF;i++) {
   MN[i]=function() { return 'DB 0x'+hex2(MEMR(PC))+'; unknown'; };
-  OPCB[i]=function() {};
-  MNCB[i]=function() { return 'DW 0xCB'+hex2(MEMR(PC+1)); };
+  OPcb[i]=function() {};
+  MNcb[i]=function() { return 'DW 0xCB'+hex2(MEMR(PC+1)); };
 }
 
 function DAA() { //DAA Table usage
@@ -60,7 +62,7 @@ function DAA() { //DAA Table usage
   'SF=(T1>>6)&1;'+
   'HF=(T1>>5)&1;'+
   'CF=(T1>>4)&1;'+
-  'CPUticks=4;';
+  'gbCPUticks=4;';
 }
 
 
@@ -70,8 +72,53 @@ function SLA_R(R, C) {
   ''+R+'=('+R+'<<1)&0xFF;'+
   'SF=HF=0;'+
   'ZF=('+R+'==0);'+
-  'CPUTicks='+C+';';
+  'gbCPUTicks='+C+';';
 }
+
+function gb_CPU_INC(R, C){
+	return ''+
+	  ''+R+'=(++'+R+')&0xFF;'+
+	  'ZF=('+R+'==0);'+
+	  'SF=0;'+
+	  'HF=('+R+'&0xF)==0;'+
+	  'gbCPUTicks='+C+';';
+}
+
+function gb_CPU_DEC(R, C){
+	return ''+
+	  ''+R+'=(--'+R+')&0xFF;'+
+	  'ZF=('+R+'==0);'+
+	  'SF=0;'+
+	  'HF=('+R+'&0xF)==0xF;'+
+	  'gbCPUTicks=4;';
+}
+
+function gb_CPU_NOP() {
+	gbCPUTicks=0;
+}
+
+
+//Opcodes
+OP[0x00]=gb_CPU_NOP(); //nop
+OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); gbCPUTicks=12; }; //LD BC, u16 
+//OP[0x02]
+//OP[0x03]
+OP[0x04]=new Function(gb_CPU_INC('rB',4));//Inc B
+OP[0x05]=new Function (gb_CPU_DEC('rB',4)); //Dec B
+OP[0x06]=function(){rB=MEMR(PC++); gbCPUTicks=8}; //LD B, u8
+OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0; gbCPUTicks=4;}; //RLCA (this needs explaining)
+
+
+
+OP[0x27]=new Function(DAA()); // DAA in opcode
+
+//opcode controller bank? maybe
+OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
+
+
+MN[0x27]=function(){ return 'DAA'; }; //DAA in mnemonic
+
+MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb
 
 /*
 Decimal Adjust register A. This instruction adjusts register A so that the
@@ -334,17 +381,3 @@ var DAAtable= [ // DAA table. I'm pretty sure There is a better way to do this. 
   0x8250,0x8350,0x8450,0x8550,0x8650,0x8750,0x8850,0x8950,
   0x8A70,0x8B70,0x8C70,0x8D70,0x8E70,0x8F70,0x9050,0x9150,
   0x9250,0x9350,0x9450,0x9550,0x9650,0x9750,0x9850,0x9950];
-
-
-OP[0x27]=new Function(DAA()); // DAA in opcode
-
-
-
-OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
-
-
-MN[0x27]=function(){ return 'DAA'; }; //DAA in mnemonic
-
-
-
-MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb

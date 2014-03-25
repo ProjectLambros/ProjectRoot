@@ -51,17 +51,6 @@ for (var i=0;i<=0xFF;i++) {
 }
 
 
-function CPU_RLC(n) {
-  CF=(n>>7)&1;
-  n=((n<<1)&0xFF)|CF;
-  SF=HF=0;
-  ZF=(n==0);
-  CPUTicks=8;
-  return n;
-}
-
-
-
 function DAA() { //DAA Table usage
   return ''+
   'T1=rA;'+
@@ -78,14 +67,6 @@ function DAA() { //DAA Table usage
 }
 
 
-function SLA_R(R, C) {
-  return ''+
-  'CF=('+R+'>>7)&1;'+
-  ''+R+'=('+R+'<<1)&0xFF;'+
-  'SF=HF=0;'+
-  'ZF=('+R+'==0);'+
-  'CPUTicks='+C+';';
-}
 
 function CPU_INC(R, C){
 	return ''+
@@ -123,6 +104,25 @@ OP[0x07]=function(){CF=(rA>>7) & 1; rA=((rA<<1) & 0xFF) | CF; NF=HF=0; ZF=rA==0;
 
 
 OP[0x27]=new Function(DAA()); // DAA in opcode
+
+
+
+function CPU_RLC(n) {
+  CF=(n>>7)&1;
+  n=((n<<1)&0xFF)|CF;
+  SF=HF=0;
+  ZF=(n==0);
+  CPUTicks=8;
+  return n;
+}
+function SLA_R(R, C) {
+  return ''+
+  'CF=('+R+'>>7)&1;'+
+  ''+R+'=('+R+'<<1)&0xFF;'+
+  'SF=HF=0;'+
+  'ZF=('+R+'==0);'+
+  'CPUTicks='+C+';';
+}
 
 //opcode controller bank? maybe
 OPcb[0x00]=function(){ rB=CPU_RLC(rB); };

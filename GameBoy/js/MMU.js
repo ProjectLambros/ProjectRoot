@@ -1,30 +1,10 @@
 var Memory = new Array(0x10000);
 
 // special register mirror values and bit states
-var RegLY = 0;
-var RegLYC = 0;
-var RegSCY = 0;
-var RegSCX = 0;
-var RegWY = 0;
-var RegWX = 0;
-var RegDIV = 0;
-var RegIF = 0;
-var RegIE = 0;
-var RegSTAT_Mode = 0;
-var RegSTAT_IntLYLYC = false;
-var RegSTAT_IntMode2 = false;
-var RegSTAT_IntMode1 = false;
-var RegSTAT_IntMode0 = false;
-
-var RegLCDC_DisplayOn = false;
-var RegLCDC_WindowYOffs = 0;
-var RegLCDC_WindowDisplay = false;
-var RegLCDC_SpriteDisplay = false;
-var RegLCDC_SpriteSize = false;
-var RegLCDC_BackgroundYOffs = 0;
-var RegLCDC_BackgroundXOffs = 0;
-var RegLCDC_BgAndWinDisplay = false;
-var RegTAC_TimerOn = false;
+var RegLY = RegLYC = RegSCY = RegSCX = RegWY = RegWX = RegDIV = RegIF = RegIE = RegSTAT_Mode = 0;
+var RegSTAT_IntLYLYC = RegSTAT_IntMode2 = RegSTAT_IntMode1 = RegSTAT_IntMode0 = false;
+var RegLCDC_DisplayOn = RegLCDC_WindowDisplay = RegLCDC_SpriteDisplay = RegLCDC_SpriteSize = RegLCDC_BgAndWinDisplay = RegTAC_TimerOn = false;
+var RegLCDC_WindowYOffs = RegLCDC_BackgroundYOffs = RegLCDC_BackgroundXOffs = 0;
 
 function MemoryReadRomOnly(a) {
   return Memory[a];

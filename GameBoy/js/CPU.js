@@ -19,7 +19,8 @@ var ZF=0,	// Zero Flag
 var T1=0; 	// temp registers
 var T2=0;
 
-var GBhalt = false;
+var gbHalt = false;
+var gbIME = true;
 var gbPause = true;
 var CPUTicks = 0;
 var DAAtable = []; // DAA Table initialization
@@ -105,10 +106,18 @@ function CPU_INC16(n){
 	return (n+1)&0xFFFF;
 }
 
+function CPU_HALT() {
+  return ''+
+  'if (gbIME) gbHalt=true;'+
+  'else {'+
+  '  Pause();'+
+  '  alert(\'HALT instruction with interrupts disabled.\');'+
+  '}'+
+  'CPUTicks=4;';
+}
 function CPU_NOP() {
 	CPUTicks=0;
 }
-
 
 //Opcodes
 OP[0x00]=CPU_NOP(); //nop
@@ -197,7 +206,25 @@ OP[0x6B]=function(){ HL=(HL&0xFF00)|rE; CPUTicks=4; }; //LD L, E
 OP[0x6C]=function(){ HL=(HL&0xFF00)|(HL>>8); CPUTicks=4; }; //LD L, H
 OP[0x6D]=CPU_NOP;
 OP[0x6E]=function(){ HL=(HL&0xFF00)|(MEMR(HL)); CPUTicks=8; }; //LD L, (HL)
+OP[0x6F]=function(){ HL=rA|(HL&0xFF00); CPUTicks=4; }; //LD L, A
+//OP[0x70]=function(){ MEMW(HL,RB); gbCPUTicks=8; }; // LD (HL),B
+//OP[0x71]=function(){ MEMW(HL,RC); gbCPUTicks=8; }; // LD (HL),C
+//OP[0x72]=function(){ MEMW(HL,RD); gbCPUTicks=8; }; // LD (HL),D
+//OP[0x73]=function(){ MEMW(HL,RE); gbCPUTicks=8; }; // LD (HL),E
+//OP[0x74]=function(){ MEMW(HL,HL>>8); gbCPUTicks=8; }; // LD (HL),H
+//OP[0x75]=function(){ MEMW(HL,HL&0x00FF); gbCPUTicks=8; }; // LD (HL),L
 
+OP[0x76]=new Function(CPU_HALT()); // HALT
+
+//OP[0x77]=function(){ MEMW(HL,RA); gbCPUTicks=8; }; // LD (HL),A
+OP[0x78]=function(){ rA=rB; CPUTicks=4; }; //LD A, B
+OP[0x79]=function(){ rA=rC; CPUTicks=4; }; //LD A, C
+OP[0x7A]=function(){ rA=rD; CPUTicks=4; }; //LD A, D
+OP[0x7B]=function(){ rA=rE; CPUTicks=4; }; //LD A, E
+OP[0x7C]=function(){ rA=HL>>8; CPUTicks=4; }; //LD A, H
+OP[0x7D]=function(){ rA=HL&0xFF; CPUTicks=4; }; //LD A, L
+OP[0x7E]=function(){ rA=MEMR(HL); CPUTicks = 8; }; //LD A, (HL)
+OP[0x7F]=CPU_NOP; //LD A, A
 
 
 

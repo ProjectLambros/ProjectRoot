@@ -82,7 +82,6 @@ function SLA_R(R, C) {
   'ZF=('+R+'==0);'+
   'CPUTicks='+C+';';
 }
-
 function CPU_INC(R, C){
 	return ''+
 	  ''+R+'=(++'+R+')&0xFF;'+
@@ -128,9 +127,77 @@ OP[0x0C]=new Function(CPU_INC('rC',4)); //INC C
 OP[0x0D]=new Function(CPU_DEC('rC',4)); //DEC C
 OP[0x0E]=function(){rC=MEMR(PC++); CPUTicks=8}; //LD C, u8
 OP[0x0F]=function(){CF=rA&1; rA=(rA>>1)|(CF<<7); SF=0; HF=0; ZF=rA==0; CPUTicks=4 }; //RRCA
-
+OP[0x10]
+OP[0x11]=function(){ rE=MEMR(PC++); rD=MEMR(PC++); CPUTicks=12; }; //LD DE, u16
+//OP[0x12]=function //LD (DE), A
+OP[0x13]=function(){ T1=CPU_INC16((rD<<8)|rE); rD=T>>8; rE=T1&0xFF; }; //INC DE
+OP[0x14]=new Function(CPU_INC('rD',4)); //INC D
+OP[0x15]=new Function(CPU_DEC('rD',4)); //DEC D
+OP[0x16]=function(){ rD=MEMR(PC++); CPUTicks=8 }; //LD D, u8 
+//OP[0x17]=function(){ }
+//OP[0x18] //JR s8
+//OP[0x19] //ADD HL, DE
+OP[0x1A]=function(){ rA=MEMR(((rD&0x00FF)<<8)|rE); CPUTicks=8; }; //LD A, (DE)
+OP[0x1B]=function(){ var dE=((rD<<8)+rE-1)&0xFFF; rD=dE>>8; rE=dE&0xFF; CPUTicks=8; }; //DEC DE
+OP[0x1C]=new Function(CPU_INC('rE',4)); //INC E
+OP[0x1D]=new Function(CPU_DEC('rE',4)); //DEC E
+OP[0x1E]=function(){rE=MEMR(PC++); CPUTicks=8}; //LD E, u8
+OP[0x1F]=function(){ T1=CF; CF=rA&1; rA=(rA>>1)|(T1<<7); SF=0; HF=0; ZF=RA==0; CPUTicks=4; }; // RRA
+//OP[0x20] //JF NZ, s8
+OP[0x21]=function(){ HL=(MEMR(PC+1)<<8)|MEMR(PC); PC+=2; CPUTicks=12; }; // LD HL,u16;
+//OP[0x22] //LDI (HL), A
+OP[0x23]=function(){HL=CPU_INC16(HL); }; //INC HL
 
 OP[0x27]=new Function(DAA()); // DAA in opcode
+
+OP[0x40]=CPU_NOP; //LD B, B
+OP[0x41]=function(){rB=rC; CPUTicks=4; }; //LD B, C
+OP[0x42]=function(){rB=rD; CPUTicks=4; }; //LD B, D
+OP[0x43]=function(){rB=rE; CPUTicks=4; }; //LD B, E
+OP[0x44]=function(){rB=HL>>8; CPUTicks=4; }; //LD B, H
+OP[0x45]=function(){rB=HL&0xFF; CPUTicks=4; }; //LD B, L
+OP[0x46]=function(){rB=MEMR(HL); CPUTicks=8; }; //LD B, (HL)
+OP[0x47]=function(){rB=rA; CPUTicks=4; }; //LD B, A
+OP[0x48]=function(){rC=rB; CPUTicks=4; }; //LD C, B
+OP[0x49]=CPU_NOP; //LD C, C
+OP[0x4A]=function(){rC=rD; CPUTicks=4; }; //LD C, D
+OP[0x4B]=function(){rC=rE; CPUTicks=4; }; //LD C, E
+OP[0x4D]=function(){rC=HL>>8; CPUTicks=4; }; //LD C, H
+OP[0x4E]=function(){rC=HL&0xFF; CPUTicks=4; }; //LD C, L
+OP[0x4F]=function(){rC=MEMR(HL); CPUTicks=8; }; //LD C, (HL)
+OP[0x4C]=function(){rC=rA; CPUTicks=4; }; //LD C, A
+OP[0x50]=function(){rD=rB; CPUTicks=4; }; //LD D, B
+OP[0x51]=function(){rD=rC; CPUTicks=4; }; //LD D, C
+OP[0x52]=gb_CPU_NOP; // LD D,D
+OP[0x53]=function(){ rD=rE; CPUTicks=4; }; // LD D,E
+OP[0x54]=function(){ rD=HL>>8; CPUTicks=4; }; // LD D,H
+OP[0x55]=function(){ rD=HL&0xFF; CPUTicks=4; }; // LD D,L
+OP[0x56]=function(){ rD=MEMR(HL); CPUTicks=8; }; // LD D,(HL)
+OP[0x57]=function(){ rD=rA; CPUTicks=4; }; // LD D,A
+OP[0x58]=function(){ rE=rB; CPUTicks=4; }; // LD E,B
+OP[0x59]=function(){ rE=rC; CPUTicks=4; }; // LD E,C
+OP[0x5A]=function(){ rE=rD; CPUTicks=4; }; // LD E,D
+OP[0x5B]=gb_CPU_NOP; // LD E,E
+OP[0x5C]=function(){ rE=HL>>8; CPUTicks=4; }; // LD E,H
+OP[0x5D]=function(){ rE=HL&0xFF; CPUTicks=4; }; // LD E,L
+OP[0x5E]=function(){ rE=MEMR(HL); CPUTicks=8; }; // LD E,(HL)
+OP[0x5F]=function(){ rE=rA; CPUTicks=4; }; // LD E,A
+OP[0x60]=function(){ HL=(HL&0x00FF)|(rB<<8); CPUTicks=4; }; //LD H,B
+OP[0x61]=function(){ HL=(HL&0x00FF)|(rC<<8); CPUTicks=4; }; //LD H,C
+OP[0x62]=function(){ HL=(HL&0x00FF)|(rD<<8); CPUTicks=4; }; //LD H,D
+OP[0x63]=function(){ HL=(HL&0x00FF)|(rE<<8); CPUTicks=4; }; //LD H,E
+OP[0x64]=CPU_NOP; //LD H, H
+OP[0x65]=function(){ HL=(HL&0x00FF)|((HL&0xFF)<<8); CPUTicks=4; }; //LD H, L
+OP[0x66]=function(){ HL=(HL&0x00FF)|(MEMR(HL)<<8); CPUTicks=8; }; //LD H, (HL)
+OP[0x67]=function(){ HL=(rA<<8)|(HL&0xFF); CPUTicks=4; }; //LD H,A
+OP[0x68]=function(){ HL=(HL&0xFF00)|rB; CPUTicks=4; }; //LD L, B
+OP[0x69]=function(){ HL=(HL&0xFF00)|rC; CPUTicks=4; }; //LD L, C
+OP[0x6A]=function(){ HL=(HL&0xFF00)|rD; CPUTicks=4; }; //LD L, D
+OP[0x6B]=function(){ HL=(HL&0xFF00)|rE; CPUTicks=4; }; //LD L, E
+OP[0x6C]=function(){ HL=(HL&0xFF00)|(HL>>8); CPUTicks=4; }; //LD L, H
+OP[0x6D]=CPU_NOP;
+OP[0x6E]=function(){ HL=(HL&0xFF00)|(MEMR(HL)); CPUTicks=8; }; //LD L, (HL)
+
 
 
 

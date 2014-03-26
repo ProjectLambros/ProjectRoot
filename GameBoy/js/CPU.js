@@ -117,6 +117,17 @@ function SLA_R(R, C) {
   'ZF=('+R+'==0);'+
   'CPUTicks='+C+';';
 }
+function CPU_SBC_A(R,C) {
+  return ''+
+  'T2=CF;'+
+  'HF=((rA&0x0F)<(('+R+'&0x0F)+T2));'+
+  'CF=((rA&0xFF)<(('+R+'&0xFF)+T2));'+
+  'rA=(RrA-'+R+'-T2)&0xFF;'+
+  'ZF=(RA==0);'+
+  'SF=1;'+
+  'CPUTicks='+C+';';
+}
+
 function CPU_INC(R, C){
 	return ''+
 	  ''+R+'=(++'+R+')&0xFF;'+
@@ -276,7 +287,21 @@ OP[0x8D]=new Function('T1=HL&0xFF;'+CPU_ADC_A('T1',4)); // ADC A,L
 OP[0x8E]=new Function('T1=MEMR(HL);'+CPU_ADC_A('T1',8)); // ADC A,(HL)
 OP[0x8F]=new Function(CPU_ADC_A('rA',4)); // ADC A,A
 OP[0x90]=new Function(CPU_SUB_A('rB',4)); // SUB B
-
+OP[0x91]=new Function(CPU_SUB_A('rC',4)); // SUB C
+OP[0x92]=new Function(CPU_SUB_A('rD',4)); // SUB D
+OP[0x93]=new Function(CPU_SUB_A('rE',4)); // SUB E
+OP[0x94]=new Function('T1=HL>>8;'+CPU_SUB_A('T1',4)); // SUB H
+OP[0x95]=new Function('T1=HL&0xFF;'+CPU_SUB_A('T1',4)); // SUB L
+OP[0x96]=new Function('T1=MEMR(HL);'+CPU_SUB_A('T1',8)); // SUB (HL)
+OP[0x97]=new Function(CPU_SUB_A('rA',4)); // SUB A
+OP[0x98]=new Function(CPU_SBC_A('rB',4)); // SBC A,B
+OP[0x99]=new Function(CPU_SBC_A('rC',4)); // SBC A,C
+OP[0x9A]=new Function(CPU_SBC_A('rD',4)); // SBC A,D
+OP[0x9B]=new Function(CPU_SBC_A('rE',4)); // SBC A,E
+OP[0x9C]=new Function('T1=HL>>8;'+CPU_SBC_A('T1',4)); // SBC A,H
+OP[0x9D]=new Function('T1=HL&0xFF;'+CPU_SBC_A('T1',4)); // SBC A,L
+OP[0x9E]=new Function('T1=MEMR(HL);'+CPU_SBC_A('T1',8)); // SBC A,(HL)
+OP[0x9F]=new Function(CPU_SBC_A('rA',4)); // SBC A,A
 
 
 //opcode controller bank? maybe

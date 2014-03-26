@@ -16,8 +16,18 @@ git push -u origin master
 //pulls all files in Project Lambros
 git pull origin master
 
+
 //if you have done this before and just want to see differences from your version and the one on the web
 git diff HEAD
+
+//If you feel like you might be working on the project for a while
+// and you dont want to deal with weird git crap
+// or if you want to cleanly do your work 
+git branch yourbranchname
+
+// switch to the new branch you made man
+git checkout yourbranchname
+
 .
 .
 .
@@ -25,13 +35,18 @@ add files and do changes and stuffs
 .
 .
 .
+
 //stage your files to be uploaded
 git add <files>
 
 //will store message and get it ready for final push
-git commit -m "DIS IS MAH MESSAGE ABOUT THIS I DID"
+git commit -m "DIS IS MAH MESSAGE ABOUT THINGS I DID"
 
-//check dah log
+//if you branched this is where you merge that stuff
+git checkout master
+git merge yourbranchname
+
+//check dah log if you need to
 git log
 
 //check whats being staged and whats changed and needs to be staged and such
@@ -42,6 +57,7 @@ git push origin master
 
 //done (I think this is all add changes as neccessary)
 
-//branching is something we will do towards the end of our project so that when we make changes it doesnt break everything
+//branching makes things a little easier so we all arent pushing and pull on the same branch so less
+//errors occur
 
 

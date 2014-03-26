@@ -21,3 +21,14 @@ var BackPal   = []; // BGP pallete - initialized in jsgb.memory.js
 var SpritePal = [[],[]]; // palettes OBP0 and OBP1 - for sprites
 var Colors    = [[0xEF,0xFF,0xDE],[0xAD,0xD7,0x94],
                    [0x52,0x92,0x73],[0x18,0x34,0x42]];
+
+
+
+function Canvas() {
+var Output ="Debug Output Goes Here";
+var c=document.getElementById("screen");
+var ctx=c.getContext("2d");
+ctx.font="10px Arial";
+ctx.fillText(Output,10,50);
+}
+

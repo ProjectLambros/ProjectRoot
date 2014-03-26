@@ -276,12 +276,12 @@ OP[0x6C]=function(){ HL=(HL&0xFF00)|(HL>>8); CPUTicks=4; }; //LD L, H
 OP[0x6D]=CPU_NOP;
 OP[0x6E]=function(){ HL=(HL&0xFF00)|(MEMR(HL)); CPUTicks=8; }; //LD L, (HL)
 OP[0x6F]=function(){ HL=rA|(HL&0xFF00); CPUTicks=4; }; //LD L, A
-OP[0x70]=function(){ MEMW(HL,rB); gbCPUTicks=8; }; // LD (HL),B
-OP[0x71]=function(){ MEMW(HL,rC); gbCPUTicks=8; }; // LD (HL),C
-OP[0x72]=function(){ MEMW(HL,rD); gbCPUTicks=8; }; // LD (HL),D
-OP[0x73]=function(){ MEMW(HL,rE); gbCPUTicks=8; }; // LD (HL),E
-OP[0x74]=function(){ MEMW(HL,HL>>8); gbCPUTicks=8; }; // LD (HL),H
-OP[0x75]=function(){ MEMW(HL,HL&0x00FF); gbCPUTicks=8; }; // LD (HL),L
+OP[0x70]=function(){ MEMW(HL,rB); CPUTicks=8; }; // LD (HL),B
+OP[0x71]=function(){ MEMW(HL,rC); CPUTicks=8; }; // LD (HL),C
+OP[0x72]=function(){ MEMW(HL,rD); CPUTicks=8; }; // LD (HL),D
+OP[0x73]=function(){ MEMW(HL,rE); CPUTicks=8; }; // LD (HL),E
+OP[0x74]=function(){ MEMW(HL,HL>>8); CPUTicks=8; }; // LD (HL),H
+OP[0x75]=function(){ MEMW(HL,HL&0x00FF); CPUTicks=8; }; // LD (HL),L
 OP[0x76]=new Function(CPU_HALT()); // HALT
 OP[0x77]=function(){ MEMW(HL,rA); gbCPUTicks=8; }; // LD (HL),A
 OP[0x78]=function(){ rA=rB; CPUTicks=4; }; //LD A, B

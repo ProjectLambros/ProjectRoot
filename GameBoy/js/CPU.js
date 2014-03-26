@@ -114,7 +114,7 @@ function CPU_NOP() {
 OP[0x00]=CPU_NOP(); //nop
 OP[0x01]=function(){rC=MEMR(PC++); rB=MEMR(PC++); CPUTicks=12; }; //LD BC, u16 
 //OP[0x02]
-OP[0x03]=function(){T1=CPU_INC16((rB<<8)|rC); rB=T!>>8; rC=T1&0xFF; }; //INC BC
+OP[0x03]=function(){T1=CPU_INC16((rB<<8)|rC); rB=T1>>8; rC=T1&0xFF; }; //INC BC
 OP[0x04]=new Function(CPU_INC('rB',4));//Inc B
 OP[0x05]=new Function (CPU_DEC('rB',4)); //Dec B
 OP[0x06]=function(){rB=MEMR(PC++); CPUTicks=8}; //LD B, u8

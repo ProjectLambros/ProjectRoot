@@ -546,8 +546,37 @@ OPcb[0x04]=function(){ HL=(HL&0x00FF)|(CPU_RLC(HL>>8)<<8); };
 OPcb[0x05]=function(){ HL=(HL&0xFF00)|CPU_RLC(HL&0xFF); };
 OPcb[0x06]=function(){ MEMW(HL,CPU_RLC(MEMR(HL))); CPUTicks+=8; };
 OPcb[0x07]=function(){ rA=CPU_RLC(rA); };
-
-
+OPcb[0x08]=function(){ rB=CPU_RRC(rB); };
+OPcb[0x09]=function(){ rC=CPU_RRC(rC); };
+OPcb[0x0A]=function(){ rD=CPU_RRC(rD); };
+OPcb[0x0B]=function(){ rE=CPU_RRC(rE); };
+OPcb[0x0C]=function(){ HL=(HL&0x00FF)|(CPU_RRC(HL>>8)<<8); };
+OPcb[0x0D]=function(){ HL=(HL&0xFF00)|CPU_RRC(HL&0xFF); };
+OPcb[0x0E]=function(){ MEMW(HL,CPU_RRC(MEMR(HL))); CPUTicks+=8; };
+OPcb[0x0F]=function(){ rA=CPU_RRC(rA); };
+OPcb[0x10]=function(){ rB=CPU_RL(rB); };
+OPcb[0x11]=function(){ rC=CPU_RL(rC); };
+OPcb[0x12]=function(){ rD=CPU_RL(rD); };
+OPcb[0x13]=function(){ rE=CPU_RL(rE); };
+OPcb[0x14]=function(){ HL=(HL&0x00FF)|(CPU_RL(HL>>8)<<8); };
+OPcb[0x15]=function(){ HL=(HL&0xFF00)|CPU_RL(HL&0xFF); };
+OPcb[0x16]=function(){ MEMW(HL,CPU_RL(MEMR(HL))); CPUTicks+=8; };
+OPcb[0x17]=function(){ rA=CPU_RL(rA); };
+OPcb[0x18]=function(){ rB=CPU_RR(rB); };
+OPcb[0x19]=function(){ rC=CPU_RR(rC); };
+OPcb[0x1A]=function(){ rD=CPU_RR(rD); };
+OPcb[0x1B]=function(){ rE=CPU_RR(rE); };
+OPcb[0x1C]=function(){ HL=(HL&0x00FF)|(CPU_RR(HL>>8)<<8); };
+OPcb[0x1D]=function(){ HL=(HL&0xFF00)|CPU_RR(HL&0xFF); };
+OPcb[0x1E]=function(){ MEMW(HL,CPU_RR(MEMR(HL))); CPUTicks+=8; };
+OPcb[0x1F]=function(){ rA=CPU_RR(rA); };
+OPcb[0x20]=new Function(SLA_R('rB',8)); // SLA B
+OPcb[0x21]=new Function(SLA_R('rC',8)); // SLA C
+OPcb[0x22]=new Function(SLA_R('rD',8)); // SLA D
+OPcb[0x23]=new Function(SLA_R('rE',8)); // SLA E
+OPcb[0x24]=new Function('T1=HL>>8;'+SLA_R('T1',8)+'HL=(T1<<8)|(HL&0x00FF);'); // SLA H
+OPcb[0x25]=new Function('T1=HL&0xFF;'+SLA_R('T1',8)+'HL=(HL&0xFF00)|T1;'); // SLA L
+OPcb[0x26]=new Function('T1=MEMR(HL);'+SLA_R('T1',16)+'MEMW(HL,T1);'); // SLA (HL)
 OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
 
 MN[0x01]=function(){ return 'LD BC,0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1)); };

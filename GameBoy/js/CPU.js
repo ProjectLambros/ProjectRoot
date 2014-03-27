@@ -400,7 +400,45 @@ OPcb[0x07]=function(){ rA=CPU_RLC(rA); };
 
 OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
 
-
+MN[0x01]=function(){ return 'LD BC,0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1)); };
+MN[0x00]=function(){ return 'NOP'; };
+MN[0x02]=function(){ return 'LD (BC),A'; };
+MN[0x03]=function(){ return 'INC BC'; };
+MN[0x04]=function(){ return 'INC B'; };
+MN[0x05]=function(){ return 'DEC B'; };
+MN[0x06]=function(){ return 'LD B,0x'+hex2(MEMR(PC+1)); };
+MN[0x07]=function(){ return 'RLCA'; };
+MN[0x08]=function(){ return 'LD(0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1))+'),SP'; };
+MN[0x09]=function(){ return 'ADD HL,BC'; };
+MN[0x0A]=function(){ return 'LD A,(BC)'; };
+MN[0x0B]=function(){ return 'DEC BC'; };
+MN[0x0C]=function(){ return 'INC C'; };
+MN[0x0D]=function(){ return 'DEC C'; };
+MN[0x0E]=function(){ return 'LD C,0x'+hex2(MEMR(PC+1)); };
+MN[0x0F]=function(){ return 'RRCA'; };
+MN[0x10]=function(){ return 'STOP'; };
+MN[0x11]=function(){ return 'LD DE,0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1)); };
+MN[0x12]=function(){ return 'LD (DE),A'; };
+MN[0x13]=function(){ return 'INC DE'; };
+MN[0x14]=function(){ return 'INC D'; };
+MN[0x15]=function(){ return 'DEC D'; };
+MN[0x16]=function(){ return 'LD D,0x'+hex2(MEMR(PC+1)); };
+MN[0x17]=function(){ return 'RLA'; };
+MN[0x18]=function(){ return 'JR '+sb(MEMR(PC+1))+'; 0x'+hex2(MEMR(PC+1)); };
+MN[0x19]=function(){ return 'ADD HL,DE'; };
+MN[0x1A]=function(){ return 'LD A,(DE)'; };
+MN[0x1B]=function(){ return 'DEC DE'; };
+MN[0x1C]=function(){ return 'INC E'; };
+MN[0x1D]=function(){ return 'DEC E'; };
+MN[0x1E]=function(){ return 'LD E,0x'+hex2(MEMR(PC+1)); };
+MN[0x1F]=function(){ return 'RRA'; };
+MN[0x20]=function(){ return 'JR NZ,'+sb(MEMR(PC+1))+'; 0x'+hex2(MEMR(PC+1)); };
+MN[0x21]=function(){ return 'LD HL,0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1)); };
+MN[0x22]=function(){ return 'LDI (HL),A'; };
+MN[0x23]=function(){ return 'INC HL'; };
+MN[0x24]=function(){ return 'INC H'; };
+MN[0x25]=function(){ return 'DEC H'; };
+MN[0x26]=function(){ return 'LD H,0x'+hex2(MEMR(PC+1)); };
 MN[0x27]=function(){ return 'DAA'; }; //DAA in mnemonic
 
 MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb

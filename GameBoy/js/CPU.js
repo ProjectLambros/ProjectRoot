@@ -688,6 +688,32 @@ MNCB[0x24]=function(){ return 'SLA H'; };
 MNCB[0x25]=function(){ return 'SLA L'; };
 MNCB[0x26]=function(){ return 'SLA (HL)'; };
 MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb
+MNCB[0x28]=function(){ return 'SRA B'; };
+MNCB[0x29]=function(){ return 'SRA C'; };
+MNCB[0x2A]=function(){ return 'SRA D'; };
+MNCB[0x2B]=function(){ return 'SRA E'; };
+MNCB[0x2C]=function(){ return 'SRA H'; };
+MNCB[0x2D]=function(){ return 'SRA L'; };
+MNCB[0x2E]=function(){ return 'SRA (HL)'; };
+MNCB[0x2F]=function(){ return 'SRA A'; };
+MNCB[0x30]=function(){ return 'SWAP B'; };
+MNCB[0x31]=function(){ return 'SWAP C'; };
+MNCB[0x32]=function(){ return 'SWAP D'; };
+MNCB[0x33]=function(){ return 'SWAP E'; };
+MNCB[0x34]=function(){ return 'SWAP H'; };
+MNCB[0x35]=function(){ return 'SWAP L'; };
+MNCB[0x36]=function(){ return 'SWAP (HL)'; };
+MNCB[0x37]=function(){ return 'SWAP A'; };
+MNCB[0x38]=function(){ return 'SRL B'; };
+MNCB[0x39]=function(){ return 'SRL C'; };
+MNCB[0x3A]=function(){ return 'SRL D'; };
+MNCB[0x3B]=function(){ return 'SRL E'; };
+MNCB[0x3C]=function(){ return 'SRL H'; };
+MNCB[0x3D]=function(){ return 'SRL L'; };
+MNCB[0x3E]=function(){ return 'SRL (HL)'; };
+MNCB[0x3F]=function(){ return 'SRL A'; };
+
+
 
 /*
 Decimal Adjust register A. This instruction adjusts register A so that the

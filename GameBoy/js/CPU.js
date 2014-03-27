@@ -577,7 +577,18 @@ OPcb[0x23]=new Function(SLA_R('rE',8)); // SLA E
 OPcb[0x24]=new Function('T1=HL>>8;'+SLA_R('T1',8)+'HL=(T1<<8)|(HL&0x00FF);'); // SLA H
 OPcb[0x25]=new Function('T1=HL&0xFF;'+SLA_R('T1',8)+'HL=(HL&0xFF00)|T1;'); // SLA L
 OPcb[0x26]=new Function('T1=MEMR(HL);'+SLA_R('T1',16)+'MEMW(HL,T1);'); // SLA (HL)
-OPcb[0x27]=new Function(SLA_R('RA',8)); // SLA A   op 27's OPcb
+OPcb[0x27]=new Function(SLA_R('rA',8)); // SLA A   op 27's OPcb
+OPcb[0x28]=function(){ CF=rB&1; rB=(rB>>1)|(rB&0x80); SF=0;HF=0;ZF=rB==0; CPUTicks=8; }; // SRA n
+OPcb[0x29]=function(){ CF=rC&1; rC=(rC>>1)|(rC&0x80); SF=0;HF=0;ZF=rC==0; CPUTicks=8; }; // SRA n
+OPcb[0x2A]=function(){ CF=rD&1;rD=(rD>>1)|(rD&0x80); SF=0;HF=0;ZF=rD==0; CPUTicks=8; }; // SRA n
+OPcb[0x2B]=function(){ CF=rE&1;rE=(rE>>1)|(rE&0x80); SF=0;HF=0;ZF=rE==0; CPUTicks=8; }; // SRA n
+OPcb[0x2C]=function(){ var H=HL>>8; CF=H&1; H=(H>>1)|(H&0x80); SF=0;HF=0;ZF=H==0; HL=(H<<8)|(HL&0x00FF); CPUTicks=8; }; // SRA n
+OPcb[0x2D]=function(){ var L=HL&0xFF; CF=L&1; L=(L>>1)|(L&0x80); SF=0;HF=0;ZF=L==0; HL=(HL&0xFF00)|L; CPUTicks=8; }; // SRA n
+OPcb[0x2E]=function(){ var M=MEMR(HL); CF=M&1; M=(M>>1)|(M&0x80); SF=0;HF=0;ZF=M==0; MEMW(HL,M); CPUTicks=16; }; // SRA n
+OPcb[0x2F]=function(){ CF=rA&1; rA=(rA>>1)|(rA&0x80); SF=0;HF=0;ZF=rA==0; CPUTicks=8; }; // SRA n
+
+
+// Mneumonic version of opcodes
 
 MN[0x01]=function(){ return 'LD BC,0x'+hex4((MEMR(PC+2)<<8)+MEMR(PC+1)); };
 MN[0x00]=function(){ return 'NOP'; };

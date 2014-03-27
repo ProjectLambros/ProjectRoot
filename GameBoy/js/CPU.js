@@ -646,7 +646,47 @@ MN[0xFB]=function(){ return 'EI'; };
 MN[0xFE]=function(){ return 'CP '+MEMR(PC+1)+'; 0x'+hex2(MEMR(PC+1)); };
 MN[0xFF]=function(){ return 'RST 0x38'; };
 
+// Mneumonic Controller Banks
 
+MNCB[0x00]=function(){ return 'RLC B'; };
+MNCB[0x01]=function(){ return 'RLC C'; };
+MNCB[0x02]=function(){ return 'RLC D'; };
+MNCB[0x03]=function(){ return 'RLC E'; };
+MNCB[0x04]=function(){ return 'RLC H'; };
+MNCB[0x05]=function(){ return 'RLC L'; };
+MNCB[0x06]=function(){ return 'RLC (HL)'; };
+MNCB[0x07]=function(){ return 'RLC A'; };
+MNCB[0x08]=function(){ return 'RRC B'; };
+MNCB[0x09]=function(){ return 'RRC C'; };
+MNCB[0x0A]=function(){ return 'RRC D'; };
+MNCB[0x0B]=function(){ return 'RRC E'; };
+MNCB[0x0C]=function(){ return 'RRC H'; };
+MNCB[0x0D]=function(){ return 'RRC L'; };
+MNCB[0x0E]=function(){ return 'RRC (HL)'; };
+MNCB[0x0F]=function(){ return 'RRC A'; };
+MNCB[0x10]=function(){ return 'RL B'; };
+MNCB[0x11]=function(){ return 'RL C'; };
+MNCB[0x12]=function(){ return 'RL D'; };
+MNCB[0x13]=function(){ return 'RL E'; };
+MNCB[0x14]=function(){ return 'RL H'; };
+MNCB[0x15]=function(){ return 'RL L'; };
+MNCB[0x16]=function(){ return 'RL (HL)'; };
+MNCB[0x17]=function(){ return 'RL A'; };
+MNCB[0x18]=function(){ return 'RR B'; };
+MNCB[0x19]=function(){ return 'RR C'; };
+MNCB[0x1A]=function(){ return 'RR D'; };
+MNCB[0x1B]=function(){ return 'RR E'; };
+MNCB[0x1C]=function(){ return 'RR H'; };
+MNCB[0x1D]=function(){ return 'RR L'; };
+MNCB[0x1E]=function(){ return 'RR (HL)'; };
+MNCB[0x1F]=function(){ return 'RR A'; };
+MNCB[0x20]=function(){ return 'SLA B'; };
+MNCB[0x21]=function(){ return 'SLA C'; };
+MNCB[0x22]=function(){ return 'SLA D'; };
+MNCB[0x23]=function(){ return 'SLA E'; };
+MNCB[0x24]=function(){ return 'SLA H'; };
+MNCB[0x25]=function(){ return 'SLA L'; };
+MNCB[0x26]=function(){ return 'SLA (HL)'; };
 MNcb[0x27]=function(){ return 'SLA A'; }; //op 27's MNcb
 
 /*

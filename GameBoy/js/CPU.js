@@ -151,7 +151,36 @@ function CPU_INC16(n){
 	CPUTicks=8;
 	return (n+1)&0xFFFF;
 }
-
+function CPU_AND_A(R,C) {
+  return ''+
+  ((R=='rA')?'':'rA&='+R+';')+
+  'ZF=(rA==0);'+
+  'HF=1;'+
+  'SF=CF=0;'+
+  'CPUTicks='+C+';'; 
+}
+function CPU_OR_A(R,C) {
+  return ''+
+  ((R=='rA')?'':'rA|='+R+';')+
+  'ZF=(rA==0);'+
+  'SF=HF=CF=0;'+
+  'CPUTicks='+C+';';
+}
+function CPU_XOR_A(R,C) {
+  return ''+
+  ((R=='rA')?'rA=0;':'rA^='+R+';')+
+  ((R=='rA')?'ZF=1;':'ZF=(rA==0);')+
+  'SF=HF=CF=0;'+
+  'CPUTicks='+C+';';
+}
+function CPU_CP_A(R,C) {
+  return ''+
+  'ZF=(rA=='+R+');'+
+  'SF=1;'+
+  'CF=rA<'+R+';'+
+  'HF=(rA&0x0F)<('+R+'&0x0F);'+
+  'CPUTicks='+C+';';
+}
 function CPU_HALT() {
   return ''+
   'if (gbIME) gbHalt=true;'+
@@ -324,6 +353,38 @@ OP[0x9C]=new Function('T1=HL>>8;'+CPU_SBC_A('T1',4)); // SBC A,H
 OP[0x9D]=new Function('T1=HL&0xFF;'+CPU_SBC_A('T1',4)); // SBC A,L
 OP[0x9E]=new Function('T1=MEMR(HL);'+CPU_SBC_A('T1',8)); // SBC A,(HL)
 OP[0x9F]=new Function(CPU_SBC_A('rA',4)); // SBC A,A
+OP[0xA0]=new Function(CPU_AND_A('rB',4)); // AND B
+OP[0xA1]=new Function(CPU_AND_A('rC',4)); // AND C
+OP[0xA2]=new Function(CPU_AND_A('rD',4)); // AND D
+OP[0xA3]=new Function(CPU_AND_A('rE',4)); // AND E
+OP[0xA4]=new Function(CPU_AND_A('HL>>8',4)); // AND H
+OP[0xA5]=new Function(CPU_AND_A('HL&0xFF',4)); // AND L
+OP[0xA6]=new Function(CPU_AND_A('MEMR(HL)',8)); // AND (HL)
+OP[0xA7]=new Function(CPU_AND_A('rA',4)); // AND A
+OP[0xA8]=new Function(CPU_XOR_A('rB',4)); // XOR B
+OP[0xA9]=new Function(CPU_XOR_A('rC',4)); // XOR C
+OP[0xAA]=new Function(CPU_XOR_A('rD',4)); // XOR D
+OP[0xAB]=new Function(CPU_XOR_A('rE',4)); // XOR E
+OP[0xAC]=new Function(CPU_XOR_A('HL>>8',4)); // XOR H
+OP[0xAD]=new Function(CPU_XOR_A('HL&0xFF',4)); // XOR L
+OP[0xAE]=new Function(CPU_XOR_A('MEMR(HL)',8)); // XOR (HL)
+OP[0xAF]=new Function(CPU_XOR_A('rA',4)); // XOR A
+OP[0xB0]=new Function(CPU_OR_A('rB',4)); // OR B
+OP[0xB1]=new Function(CPU_OR_A('rC',4)); // OR C
+OP[0xB2]=new Function(CPU_OR_A('rD',4)); // OR D
+OP[0xB3]=new Function(CPU_OR_A('rE',4)); // OR E
+OP[0xB4]=new Function(CPU_OR_A('HL>>8',4)); // OR H
+OP[0xB5]=new Function(CPU_OR_A('HL&0xFF',4)); // OR L
+OP[0xB6]=new Function(CPU_OR_A('MEMR(HL)',8)); // OR (HL)
+OP[0xB7]=new Function(CPU_OR_A('rA',4)); // OR A
+OP[0xB8]=new Function(CPU_CP_A('rB',4)); // CP B
+OP[0xB9]=new Function(CPU_CP_A('rC',4)); // CP C
+OP[0xBA]=new Function(CPU_CP_A('rD',4)); // CP D
+OP[0xBB]=new Function(CPU_CP_A('rE',4)); // CP E
+OP[0xBC]=new Function('T1=HL>>8;'+CPU_CP_A('T1',4)); // CP H
+OP[0xBD]=new Function('T1=HL&0xFF;'+CPU_CP_A('T1',4)); // CP L
+OP[0xBE]=new Function('T1=MEMR(HL);'+CPU_CP_A('T1',8)); // CP (HL)
+OP[0xBF]=new Function(CPU_CP_A('rA',4)); // CP A
 
 
 //opcode controller bank? maybe

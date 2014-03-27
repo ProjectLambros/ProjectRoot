@@ -19,6 +19,7 @@ var ZF=0,	// Zero Flag
 var T1=0; 	// temp registers
 var T2=0;
 
+var EnableCallerStack = false;
 var gbHalt = false;
 var gbIME = true;
 var gbPause = true;
@@ -50,6 +51,25 @@ for (var i=0;i<=0xFF;i++) {
   OPcb[i]=function() {};
   MNcb[i]=function() { return 'DW 0xCB'+hex2(MEMR(PC+1)); };
 }
+
+if (EnableCallerStack) {
+  var CallerStack = [];
+  var Save_Caller = function() {
+    CallerStack.unshift(PC-1);
+    if (CallerStack.length>8) CallerStack.pop();
+  }
+  var Dump_Caller_Stack = function() {
+    var s='Caller Stack:\n';
+    for (var i in CallerStack) s+='0x'+hex4(CallerStack[i])+'\n';
+    return s;
+  }
+}  
+else {
+  var Dump_Caller_Stack = function() { 
+    return 'Caller stack disabled.\n'+
+           'To enable set EnableCallerStack=true in CPU.js';
+  }         
+}  
 
 function CPU_ADD_A(R,C) {
   return ''+
@@ -210,6 +230,24 @@ function CPU_JP(c) {
   'if ('+c+') PC=(MEMR(PC+1)<<8)|MEMR(PC);'+
   'else PC+=2;'+
   'CPUTicks=12;';
+}
+function gb_CPU_CALL(c) {
+  if (c=='true') return ''+
+  ((EnableCallerStack)?'Save_Caller();':'')+
+  'PC+=2;'+
+  'MEMW(--SP,PC>>8);'+
+  'MEMW(--SP,PC&0xFF);'+
+  'PC=(MEMR(PC-1)<<8)|MEMR(PC-2);'+
+  'CPUTicks=12;'; 
+  else return ''+
+  ((EnableCallerStack)?'Save_Caller();':'')+
+  'PC+=2;'+
+  'if ('+c+') {'+
+  '  MEMW(--SP,PC>>8);'+
+  '  MEMW(--SP,PC&0xFF);'+
+  '  PC=(MEMR(PC-1)<<8)|MEMR(PC-2);'+
+  '}'+
+  'CPUTicks=12;'; 
 }
 function CPU_HALT() {
   return ''+
@@ -418,11 +456,17 @@ OP[0xBC]=new Function('T1=HL>>8;'+CPU_CP_A('T1',4)); // CP H
 OP[0xBD]=new Function('T1=HL&0xFF;'+CPU_CP_A('T1',4)); // CP L
 OP[0xBE]=new Function('T1=MEMR(HL);'+CPU_CP_A('T1',8)); // CP (HL)
 OP[0xBF]=new Function(CPU_CP_A('rA',4)); // CP A
-OP[0xC0]
+OP[0xC0]=new Function(CPU_RET('!ZF')); //RET NZ
 OP[0xC1]=function(){ rC=MEMR(SP++); rB=MEMR(SP++); CPUTicks=12; }; //POP BC
+OP[0xC2]=new Function(CPU_JP('!ZF')); // JP NZ,u16
+OP[0xC3]=new Function(CPU_JP('true')); // JP u16;
+OP[0xC4]=new Function(CPU_CALL('!ZF')); // CALL NZ,u16
+OP[0xC5]=function(){ MEMW(--SP,rB); MEMW(--SP,rC); CPUTicks=16; }; // PUSH BC
+OP[0xC6]=new Function('T1=MEMR(PC++);'+CPU_ADD_A('T1',8)); 
 
 
 //opcode controller bank? maybe
+
 OPcb[0x00]=function(){ rB=CPU_RLC(rB); };
 OPcb[0x01]=function(){ rC=CPU_RLC(rC); };
 OPcb[0x02]=function(){ rD=CPU_RLC(rD); };

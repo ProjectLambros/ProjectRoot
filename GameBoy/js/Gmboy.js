@@ -1,7 +1,7 @@
 var RunInterval;
 var fpsInterval;
 
-function Pause() {
+function GBPause() {
 	if (gbPause) return;
 	gbPause = true;
 	//No clue what the below does

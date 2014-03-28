@@ -23,15 +23,15 @@ function sp(s,l){
 //hopefully you can use this Austin
 function testCPU(){
 
-    $('rA').innerHTML='A: '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);
-    $('rB').innerHTML='B: '+zf(hex(rB),2)+br+sp(zf(bin(rB),8),4);
-    $('rC').innerHTML='C: '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
-    $('rD').innerHTML='D: '+zf(hex(rD),2)+br+sp(zf(bin(rD),8),4);
-    $('rE').innerHTML='E: '+zf(hex(rE),2)+br+sp(zf(bin(rE),8),4);
-    $('HL').innerHTML='&nbsp;HL: '+zf(hex(HL),4)+br+sp(zf(bin(HL),16),4);
-    $('SP').innerHTML='&nbsp;SP: '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
-    $('PC').innerHTML='&nbsp;PC: '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
-    $('rF').innerHTML='Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
+    $('rA').innerHTML='register A:<br /> '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);
+    $('rB').innerHTML='register B:<br /> '+zf(hex(rB),2)+br+sp(zf(bin(rB),8),4);
+    $('rC').innerHTML='register C:<br /> '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
+    $('rD').innerHTML='register D:<br /> '+zf(hex(rD),2)+br+sp(zf(bin(rD),8),4);
+    $('rE').innerHTML='register E:<br /> '+zf(hex(rE),2)+br+sp(zf(bin(rE),8),4);
+    $('HL').innerHTML='&nbsp;registers H and L:<br /> '+zf(hex(HL),4)+br+sp(zf(bin(HL),16),4);
+    $('SP').innerHTML='&nbsp;Stack Pointer:<br /> '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
+    $('PC').innerHTML='&nbsp;Program Counter:<br /> '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
+    $('rF').innerHTML='Flags:<br />Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
 }
 
 function RunTest() {
@@ -48,14 +48,14 @@ function RunTest() {
 var CPUdebug = 
 '<div class="FL">\
 <table class="FL MT MR MB C">\
-<thead><tr><th colspan="2">CPU Dump</th></tr></thead>\
+<thead><tr><th colspan="2">CPU Values</th></tr></thead>\
 <tbody>\
-<tr><td id="rA">A</td><td id="rF">F</td></tr>\
-<tr><td id="rB">B</td><td id="rC">C</td></tr>\
-<tr><td id="rD">D</td><td id="rE">E</td></tr>\
-<tr><td colspan="2" id="HL">HL</td></tr>\
-<tr><td colspan="2" id="SP">SP</td></tr>\
-<tr><td colspan="2" id="PC">PC</td></tr>\
+<tr><td id="rA">register A</td><td id="rF">register F</td></tr>\
+<tr><td id="rB">register B</td><td id="rC">register C</td></tr>\
+<tr><td id="rD">register D</td><td id="rE">register E</td></tr>\
+<tr><td colspan="2" id="HL">registers H and L</td></tr>\
+<tr><td colspan="2" id="SP">Stack Pointer</td></tr>\
+<tr><td colspan="2" id="PC">Program Counter</td></tr>\
 </tbody>\
 </table>\
 </div>';

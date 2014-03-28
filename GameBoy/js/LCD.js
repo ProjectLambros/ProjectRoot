@@ -25,16 +25,15 @@ var Colors    = [[0xEF,0xFF,0xDE],[0xAD,0xD7,0x94],
 
 function Canvas() {
 
-//var Output = '<div id="DEBUGGER"></div>\';
 var Output = "CPU regs, SP, and PC values";
-var Output2 = "will be shown if start(A key)";
-var Output3 = "is pressed";
+var Output2 = "will be shown to the left if";
+var Output3 = "start(A key) is pressed";
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";
-ctx.fillText(Output,10,10);
-ctx.fillText(Output2,10,20);
-ctx.fillText(Output3,50,30);
+ctx.fillText(Output,10,30);
+ctx.fillText(Output2,16,40);
+ctx.fillText(Output3,22,50);
 
 }
 

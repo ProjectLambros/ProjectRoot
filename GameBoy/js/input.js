@@ -6,7 +6,6 @@ function OnKeyDown(e) {
     // start
     Pin15&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
-    alert("Start Pressed Down");
 $('DEBUGGER').innerHTML=CPUdebug;
 testCPU();
 }
@@ -17,7 +16,6 @@ function OnKeyUp(e) {
     // start
     Pin15|=8; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
-    alert("Start Pressed Up");
 $('DEBUGGER').innerHTML=CPUdebug;
 testCPU();
 }

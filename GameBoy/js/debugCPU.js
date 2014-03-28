@@ -28,9 +28,9 @@ function testCPU(){
     $('rC').innerHTML='register C:<br /> '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
     $('rD').innerHTML='register D:<br /> '+zf(hex(rD),2)+br+sp(zf(bin(rD),8),4);
     $('rE').innerHTML='register E:<br /> '+zf(hex(rE),2)+br+sp(zf(bin(rE),8),4);
-    $('HL').innerHTML='&nbsp;registers H and L:<br /> '+zf(hex(HL),4)+br+sp(zf(bin(HL),16),4);
-    $('SP').innerHTML='&nbsp;Stack Pointer:<br /> '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
-    $('PC').innerHTML='&nbsp;Program Counter:<br /> '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
+    $('HL').innerHTML='registers H and L:<br /> '+zf(hex(HL),4)+br+sp(zf(bin(HL),16),4);
+    $('SP').innerHTML='Stack Pointer:<br /> '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
+    $('PC').innerHTML='Program Counter:<br /> '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
     $('rF').innerHTML='Flags:<br />Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
 }
 

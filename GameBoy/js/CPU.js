@@ -303,6 +303,21 @@ function CPU_UNK() {
 function CPU_NOP() {
 	CPUTicks=0;
 }
+function CPU_SWAP(R) {
+  if (R=='H') return ''+
+    'HL=((HL&0x0F00)<<4) | ((HL&0xF000)>>4) | (HL&0x00FF);'+
+    'CPUTicks=8;';
+  else if (R=='L') return ''+
+    'HL=((HL&0x000F)<<4) | ((HL&0x00F0)>>4) | (HL&0xFF00);'+
+    'CPUTicks=8;';
+  else if (R=='(HL)') return ''+
+  'T1=MEMR(HL);'+
+  'MEMW(HL, ((T1<<4)|(T1>>4))&0xFF);'+
+  'CPUTicks=8;';
+  else return ''+
+  ''+R+'=(('+R+'<<4)|('+R+'>>4))&0xFF;'+
+  'CPUTicks=8;';  
+}
 
 //Opcodes
 
@@ -425,7 +440,7 @@ OP[0x73]=function(){ MEMW(HL,rE); CPUTicks=8; }; // LD (HL),E
 OP[0x74]=function(){ MEMW(HL,HL>>8); CPUTicks=8; }; // LD (HL),H
 OP[0x75]=function(){ MEMW(HL,HL&0x00FF); CPUTicks=8; }; // LD (HL),L
 OP[0x76]=new Function(CPU_HALT()); // HALT
-OP[0x77]=function(){ MEMW(HL,rA); gbCPUTicks=8; }; // LD (HL),A
+OP[0x77]=function(){ MEMW(HL,rA); CPUTicks=8; }; // LD (HL),A
 OP[0x78]=function(){ rA=rB; CPUTicks=4; }; //LD A, B
 OP[0x79]=function(){ rA=rC; CPUTicks=4; }; //LD A, C
 OP[0x7A]=function(){ rA=rD; CPUTicks=4; }; //LD A, D
@@ -554,7 +569,7 @@ OP[0xF4]=CPU_UNK;
 OP[0xF5]=function(){ MEMW(--SP,rA); MEMW(--SP,(ZF<<7)|(SF<<6)|(HF<<5)|(CF<<4)); CPUTicks=16; }; // PUSH AF
 OP[0xF6]=new Function(CPU_OR_A('MEMR(PC++)',8)); // OR u8;
 OP[0xF7]=new Function(CPU_RST('0x30')); // RST 0x30
-OP[0xF8]=function(){ var n=MEMR(PC++); HL=SP+sb(n); ZF=0; RN=0; HF=(((SP&0x0F)+(n&0x0F))>0x0F); CF=(((SP&0xFF)+(n&0xFF))>0xFF); gbCPUTicks=12; }; // LD HL,SP+u8;
+OP[0xF8]=function(){ var n=MEMR(PC++); HL=SP+sb(n); ZF=0; RN=0; HF=(((SP&0x0F)+(n&0x0F))>0x0F); CF=(((SP&0xFF)+(n&0xFF))>0xFF); CPUTicks=12; }; // LD HL,SP+u8;
 OP[0xF9]=function(){ SP=HL; CPUTicks=8; }; // LD SP,HL
 OP[0xFA]=function(){ rA=MEMR((MEMR(PC+1)<<8)|MEMR(PC)); PC+=2; CPUTicks=16; }; // LD A,(u16)
 OP[0xFB]=function(){ gbIME=true; CPUTicks=4; }; // EI
@@ -613,7 +628,22 @@ OPcb[0x2C]=function(){ var H=HL>>8; CF=H&1; H=(H>>1)|(H&0x80); SF=0;HF=0;ZF=H==0
 OPcb[0x2D]=function(){ var L=HL&0xFF; CF=L&1; L=(L>>1)|(L&0x80); SF=0;HF=0;ZF=L==0; HL=(HL&0xFF00)|L; CPUTicks=8; }; // SRA n
 OPcb[0x2E]=function(){ var M=MEMR(HL); CF=M&1; M=(M>>1)|(M&0x80); SF=0;HF=0;ZF=M==0; MEMW(HL,M); CPUTicks=16; }; // SRA n
 OPcb[0x2F]=function(){ CF=rA&1; rA=(rA>>1)|(rA&0x80); SF=0;HF=0;ZF=rA==0; CPUTicks=8; }; // SRA n
-
+OPcb[0x30]=new Function(CPU_SWAP('rB'));
+OPcb[0x31]=new Function(CPU_SWAP('rC'));
+OPcb[0x32]=new Function(CPU_SWAP('rD'));
+OPcb[0x33]=new Function(CPU_SWAP('rE'));
+OPcb[0x34]=new Function(CPU_SWAP('H'));
+OPcb[0x35]=new Function(CPU_SWAP('L'));
+OPcb[0x36]=new Function(CPU_SWAP('(HL)'));
+OPcb[0x37]=new Function(CPU_SWAP('rA'));
+OPcb[0x38]=function(){ CF=rB&1; rB=rB>>1; SF=0;HF=0;ZF=rB==0; CPUTicks=8; }; // SRL n
+OPcb[0x39]=function(){ CF=rC&1; rC=rC>>1; SF=0;HF=0;ZF=rC==0; CPUTicks=8; }; // SRL n
+OPcb[0x3A]=function(){ CF=rD&1; rD=rD>>1; SF=0;HF=0;ZF=rD==0; CPUTicks=8; }; // SRL n
+OPcb[0x3B]=function(){ CF=rE&1; rE=rE>>1; SF=0;HF=0;ZF=rE==0; CPUTicks=8; }; // SRL n
+OPcb[0x3C]=function(){ var H=HL>>8; CF=H&1; H=H>>1; SF=0;HF=0;ZF=H==0; HL=(H<<8)|(HL&0x00FF); CPUTicks=8; }; // SRL n
+OPcb[0x3D]=function(){ var L=HL&0xFF; CF=L&1; L=L>>1; SF=0;HF=0;ZF=L==0; HL=(HL&0xFF00)|L; CPUTicks=8; }; // SRL n
+OPcb[0x3E]=function(){ var M=MEMR(HL); CF=M&1; M=M>>1; SF=0;HF=0;ZF=M==0; MEMW(HL,M); CPUTicks=16; }; // SRL n
+OPcb[0x3F]=function(){ CF=rA&1; rA=rA>>1; SF=0;HF=0;ZF=rA==0; CPUTicks=8; }; // SRL n
 
 // Mneumonic version of opcodes
 

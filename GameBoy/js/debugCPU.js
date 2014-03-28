@@ -37,6 +37,6 @@ function RunTest() {
   gbFrames  = 0;
   Init_Input()
   Init_CPU();
-  testCPU();
   Canvas();
+  testCPU();
 }

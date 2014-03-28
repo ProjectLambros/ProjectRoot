@@ -6,6 +6,42 @@ var RegSTAT_IntLYLYC = RegSTAT_IntMode2 = RegSTAT_IntMode1 = RegSTAT_IntMode0 = 
 var RegLCDC_DisplayOn = RegLCDC_WindowDisplay = RegLCDC_SpriteDisplay = RegLCDC_SpriteSize = RegLCDC_BgAndWinDisplay = RegTAC_TimerOn = false;
 var RegLCDC_WindowYOffs = RegLCDC_BackgroundYOffs = RegLCDC_BackgroundXOffs = 0;
 
+// special register addresses
+var _P1_   = 0xFF00;
+var _SC_   = 0xFF02;
+var _DIV_  = 0xFF04;
+var _TIMA_ = 0xFF05;
+var _TMA_  = 0xFF06;
+var _TAC_  = 0xFF07;
+var _IF_   = 0xFF0F;
+var _LCDC_ = 0xFF40;
+var _STAT_ = 0xFF41;
+var _SCY_  = 0xFF42;
+var _SCX_  = 0xFF43;
+var _LY_   = 0xFF44;
+var _LYC_  = 0xFF45;
+var _DMA_  = 0xFF46;
+var _BGP_  = 0xFF47;
+var _OBP0_ = 0xFF48;
+var _OBP1_ = 0xFF49;
+var _WY_   = 0xFF4A;
+var _WX_   = 0xFF4B;
+var _IE_   = 0xFFFF;
+
+// start addresses
+var _ROM0_ = 0x0000;
+var _ROM1_ = 0x4000; 
+var _VRAM_ = 0x8000; // video RAM
+var _BTD0_ = 0x8000; // backgroun tile data 0
+var _BTD1_ = 0x8800; // backgroun tile data 1
+var _BTM0_ = 0x9800; // background tile map 0
+var _BTM1_ = 0x9C00; // background tile map 1
+var _RAM1_ = 0xA000; // switchable RAM
+var _RAM0_ = 0xC000; // internal RAM
+var _ECHO_ = 0xE000; // echo of internal RAM
+var _OAM_  = 0xFE00; // object attribute
+
+
 function MemoryReadRomOnly(a) {
   return Memory[a];
 }

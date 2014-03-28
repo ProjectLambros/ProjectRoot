@@ -30,11 +30,26 @@ function sp(s,l){
     $('PC').innerHTML='&nbsp;PC: '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
     $('rF').innerHTML='Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
 }
-
+/*
+var CPUdebug = 
+'<table class="FL MT MR MB C">\
+<thead><tr><th colspan="2">CPU Dump</th></tr></thead>\
+<tbody>\
+<tr><td id="rA">A</td><td id="rF">F</td></tr>\
+<tr><td id="rB">B</td><td id="rC">C</td></tr>\
+<tr><td id="rD">D</td><td id="rE">E</td></tr>\
+<tr><td colspan="2" id="HL">HL</td></tr>\
+<tr><td colspan="2" id="SP">SP</td></tr>\
+<tr><td colspan="2" id="PC">PC</td></tr>\
+</tbody>\
+</table>\';
+*/
 function RunTest() {
+
   GBPause();
   gbSeconds = 0;
   gbFrames  = 0;
+//  $('DEBUGGER').innerHTML=CPUdebug;
   Init_Input()
   Init_CPU();
   Canvas();

@@ -7,6 +7,7 @@ function OnKeyDown(e) {
     Pin15&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
     alert("Start Pressed Down");
+//$('DEBUGGER').style.height=(show)?'auto':'0px';
 }
     return;
 }
@@ -16,6 +17,7 @@ function OnKeyUp(e) {
     Pin15|=8; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
     alert("Start Pressed Up");
+//$('DEBUGGER').style.height=(show)?'auto':'0px';
 }
     return;
 }

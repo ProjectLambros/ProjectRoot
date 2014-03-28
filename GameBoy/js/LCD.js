@@ -21,29 +21,20 @@ var BackPal   = []; // BGP pallete - initialized in jsgb.memory.js
 var SpritePal = [[],[]]; // palettes OBP0 and OBP1 - for sprites
 var Colors    = [[0xEF,0xFF,0xDE],[0xAD,0xD7,0x94],
                    [0x52,0x92,0x73],[0x18,0x34,0x42]];
-/*
-var CPUdebug =
-'<table class="FL MT MR MB C">\
-<thead><tr><th colspan="2">CPU Dump</th></tr></thead>\
-<tbody>\
-<tr><td id="rA">A</td><td id="rF">F</td></tr>\
-<tr><td id="rB">B</td><td id="rC">C</td></tr>\
-<tr><td id="rD">D</td><td id="rE">E</td></tr>\
-<tr><td colspan="2" id="HL">HL</td></tr>\
-<tr><td colspan="2" id="SP">SP</td></tr>\
-<tr><td colspan="2" id="PC">PC</td></tr>\
-</tbody>\
-</table>\';
-$('DEBUGGER').innerHTML=CPUdebug;*/
+
 
 function Canvas() {
 
-
-var Output = "CPU register, stack pointer, and program counter values";
-
+//var Output = '<div id="DEBUGGER"></div>\';
+var Output = "CPU regs, SP, and PC values";
+var Output2 = "will be shown if start(A key)";
+var Output3 = "is pressed";
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";
-ctx.fillText(Output,10,50);
+ctx.fillText(Output,10,10);
+ctx.fillText(Output2,10,20);
+ctx.fillText(Output3,50,30);
+
 }
 

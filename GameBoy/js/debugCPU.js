@@ -4,7 +4,22 @@ We can show this to the TA so it 1. shows functionality of our works and 2. show
 //THIS WAS TAKEN FROM GB.DEBUGGER.JS
 //hopefully you can use this Austin
 function testCPU(){
-/* This looks like Jquery, 
+// Get element from id
+function $(id){return document.getElementById(id);}
+var br='<br/'+'>\n';
+
+// Insert a space every "l" chars.
+// for example: sp('12345678',4) returns '1234 5678'
+function sp(s,l){
+  var r=[],i=0;
+  while (s.length>l) {
+    r[i++]=s.substr(0,l);
+    s=s.substr(l);
+  }
+  if (s.length>0) r[i]=s;
+  return r.join('&nbsp;');
+}
+
     $('rA').innerHTML='A: '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);
     $('rB').innerHTML='B: '+zf(hex(rB),2)+br+sp(zf(bin(rB),8),4);
     $('rC').innerHTML='C: '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
@@ -14,7 +29,6 @@ function testCPU(){
     $('SP').innerHTML='&nbsp;SP: '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
     $('PC').innerHTML='&nbsp;PC: '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
     $('rF').innerHTML='Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
-*/
 }
 
 function RunTest() {

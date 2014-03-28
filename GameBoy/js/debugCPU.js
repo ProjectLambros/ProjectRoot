@@ -1,9 +1,7 @@
 /* I want a function that when given fixed input the output is whatever in the cache of the cpu
 We can show this to the TA so it 1. shows functionality of our works and 2. shows our progress.
 */
-//THIS WAS TAKEN FROM GB.DEBUGGER.JS
-//hopefully you can use this Austin
-function testCPU(){
+
 // Get element from id
 function $(id){return document.getElementById(id);}
 var br='<br/'+'>\n';
@@ -20,6 +18,11 @@ function sp(s,l){
   return r.join('&nbsp;');
 }
 
+
+//THIS WAS TAKEN FROM GB.DEBUGGER.JS
+//hopefully you can use this Austin
+function testCPU(){
+
     $('rA').innerHTML='A: '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);
     $('rB').innerHTML='B: '+zf(hex(rB),2)+br+sp(zf(bin(rB),8),4);
     $('rC').innerHTML='C: '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
@@ -30,9 +33,21 @@ function sp(s,l){
     $('PC').innerHTML='&nbsp;PC: '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
     $('rF').innerHTML='Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
 }
-/*
+
+function RunTest() {
+
+  GBPause();
+  gbSeconds = 0;
+  gbFrames  = 0;
+  $('DEBUGGER').innerHTML=CPUdebug;
+  Init_Input()
+  Init_CPU();
+  Canvas();
+  testCPU();
+}
 var CPUdebug = 
-'<table class="FL MT MR MB C">\
+'<div class="FL">\
+<table class="FL MT MR MB C">\
 <thead><tr><th colspan="2">CPU Dump</th></tr></thead>\
 <tbody>\
 <tr><td id="rA">A</td><td id="rF">F</td></tr>\
@@ -42,16 +57,5 @@ var CPUdebug =
 <tr><td colspan="2" id="SP">SP</td></tr>\
 <tr><td colspan="2" id="PC">PC</td></tr>\
 </tbody>\
-</table>\';
-*/
-function RunTest() {
-
-  GBPause();
-  gbSeconds = 0;
-  gbFrames  = 0;
-//  $('DEBUGGER').innerHTML=CPUdebug;
-  Init_Input()
-  Init_CPU();
-  Canvas();
-  testCPU();
-}
+</table>\
+</div>';

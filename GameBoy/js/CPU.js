@@ -41,6 +41,24 @@ function hex4(n) {return zf(hex(n),4);};
 // Convert decimal to binary
 function bin(n){return (n*1).toString(2);}
 
+function Init_CPU() {
+	gbPause=true;
+	ZF=0x01; //Flags are set to 0xB0->Z1 S0 H1 C1
+	HF=0x01;
+	SF=0x00;
+	CF=0x01;
+	rA=0x01; //for Gameboy and SGB rA=0x01 
+	rB=0x00;
+	rC=0x13;
+	rD=0x00;
+	rE=0xD8;
+	PC=0x0100;
+	SP=0xFFFE;
+	HL=0x014D;
+	CPUTicks=0;
+}
+
+
 
 // Opcode Arrays
 var OP=[], OPcb=[]; // Opcodes

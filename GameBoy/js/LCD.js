@@ -27,10 +27,14 @@ function Canvas() {
 
 //var Output = '<div id="DEBUGGER"></div>\';
 var Output = "CPU regs, SP, and PC values";
-
+var Output2 = "will be shown if start(A key)";
+var Output3 = "is pressed";
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";
 ctx.fillText(Output,10,10);
+ctx.fillText(Output2,10,20);
+ctx.fillText(Output3,50,30);
+
 }
 

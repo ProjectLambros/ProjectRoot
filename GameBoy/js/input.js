@@ -4,22 +4,42 @@ var Pin15=0; // start select a b
 
 function OnKeyDown(e) {
     // start
-    Pin15&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
-$('DEBUGGER').innerHTML=CPUdebug;
+    Pin15&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault();
+$('DEBUGGER').innerHTML=CPUdebugReg;
 testCPU();
 }
-    return;
+//    return;
+
+ // select
+if (e.keyCode == 83) {
+    Pin15&=0xFB; MEMW(_IF_,RegIF|16); e.preventDefault(); 
+$('OPCODES').innerHTML=CPUdebugOP;
+TestOPS();
+}
+
+
+return;
 }
 
 function OnKeyUp(e) {
     // start
-    Pin15|=8; MEMW(_IF_,RegIF|16); e.preventDefault();
 if (e.keyCode == 65) {
-$('DEBUGGER').innerHTML=CPUdebug;
+    Pin15|=8; MEMW(_IF_,RegIF|16); e.preventDefault();
+$('DEBUGGER').innerHTML=CPUdebugReg;
 testCPU();
 }
-    return;
+//    return;
+
+     // select
+if (e.keyCode == 83) {
+    Pin15&=0xFB; MEMW(_IF_,RegIF|16); e.preventDefault(); 
+$('OPCODES').innerHTML=CPUdebugOP;
+TestOPS();
+}
+
+
+return;
 }
 
 function Init_Input() {

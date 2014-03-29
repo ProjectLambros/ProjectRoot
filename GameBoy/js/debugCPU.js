@@ -30,6 +30,35 @@ function testCPU(){
     $('SP').innerHTML='Stack Pointer:<br /> '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
     $('PC').innerHTML='Program Counter:<br /> '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
     $('rF').innerHTML='Flags:<br />Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
+
+}
+
+
+function TestOPS() {
+
+    var dump_asm_h = 40;
+  var s='';
+  var oPC=PC;
+  var of=0;
+  var id='';
+  var st='';
+  PC=Math.round(0xFFFF-dump_asm_h+1);
+  if (PC<=0) PC=0;
+  for (var i=0;i<dump_asm_h;i++) {
+    id='ASM_'+PC;
+    st=(oPC==PC)?' style="background:#9F9;"':'';
+    s+='<div id="'+id+'"'+st+'>';
+    s+=zf(hex(PC),4)+': ';
+    s+=zf(hex(MEMR(PC)),2)+' = ';
+    s+=MN[MEMR(PC)];
+    s+='</span></div>\n';
+    PC++;
+  }
+//else s+='<div>&nbsp;</div>\n';
+  $('OPCODESin').innerHTML=s;  
+
+  PC=oPC;
+
 }
 
 function RunTest() {
@@ -43,9 +72,9 @@ function RunTest() {
   Canvas();
 //  testCPU();
 }
-var CPUdebug = 
-'<div class="FL">\
-<table class="FL MT MR MB C">\
+var CPUdebugReg = 
+'<div>\
+<table>\
 <thead><tr><th colspan="2">CPU Values</th></tr></thead>\
 <tbody>\
 <tr><td id="rA">register A</td><td id="rF">register F</td></tr>\
@@ -54,6 +83,17 @@ var CPUdebug =
 <tr><td colspan="2" id="HL">registers H and L</td></tr>\
 <tr><td colspan="2" id="SP">Stack Pointer</td></tr>\
 <tr><td colspan="2" id="PC">Program Counter</td></tr>\
+</tbody>\
+</table>\
+</div>';
+
+var CPUdebugOP =
+'<div>\
+<table>\
+<thead><tr><th colspan="2">Opcodes</th></tr></thead>\
+<tbody><tr>\
+<td id="OPCODESin">data</td>\
+</tr>\
 </tbody>\
 </table>\
 </div>';

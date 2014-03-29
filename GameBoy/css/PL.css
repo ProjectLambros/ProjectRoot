@@ -26,4 +26,37 @@ left: 3.5px;
  float: center;
  margin: 0px auto;
 }
- 
+#DEBUGGER {
+float: left;
+position:absolute;
+margin-top: -450px;
+
+}
+#OPCODES {
+float: right;
+right: 20px;
+position:absolute;
+margin-top: -450px;
+
+} 
+table { 
+font-family:'Bitstream Vera Sans Mono','Lucida Console','droid_monospace',monospace; 
+font-size:9pt; 
+margin:0px; 
+}
+thead { 
+text-align:center; 
+}
+th { 
+font-family:sans-serif; 
+padding:2px 0px 4px 0px; 
+font-size:10pt;
+}
+th, td { 
+border:1px solid #000; 
+}
+hr { 
+border:none;
+border-bottom:1px solid #000;
+margin:1px 0px;
+}

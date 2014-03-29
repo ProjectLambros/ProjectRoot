@@ -28,16 +28,18 @@ function Canvas() {
 var Output = "CPU regs, SP, and PC values";
 var Output2 = "will be shown to the left if";
 var Output3 = "start(A key) is pressed";
-var Output4 = "Opcodes will be shown on the right";
-var Output5 = "when select(S key) is pressed";
+var Output4 = "Opcodes will be shown on";
+var Output5 = "the right when select(S key)";
+var Output6 = "is pressed";
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";
 ctx.fillText(Output,10,30);
 ctx.fillText(Output2,16,40);
 ctx.fillText(Output3,22,50);
-ctx.fillText(Output4,1,70);
+ctx.fillText(Output4,14,70);
 ctx.fillText(Output5,10,80);
+ctx.fillText(Output6,50,90);
 
 }
 

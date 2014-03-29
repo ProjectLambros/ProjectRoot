@@ -36,6 +36,14 @@ function testCPU(){
 
 function TestOPS() {
 
+for(var i=0; i<hex(PC); i++) {
+var s =s+=zf(hex(PC),4)+': '; 
+    s+=zf(hex(PC),2);
+    s+='=';
+    s+= MNcb[i]()+'<br />';
+
+}
+/*
     var dump_asm_h = 40;
   var s='';
   var oPC=PC;
@@ -53,11 +61,10 @@ function TestOPS() {
     s+=MN[MEMR(PC)];
     s+='</span></div>\n';
     PC++;
-  }
-//else s+='<div>&nbsp;</div>\n';
+  }*/
   $('OPCODESin').innerHTML=s;  
 
-  PC=oPC;
+//  PC=oPC;
 
 }
 
@@ -66,11 +73,9 @@ function RunTest() {
   GBPause();
   gbSeconds = 0;
   gbFrames  = 0;
-//  $('DEBUGGER').innerHTML=CPUdebug;
   Init_Input()
   Init_CPU();
   Canvas();
-//  testCPU();
 }
 var CPUdebugReg = 
 '<div>\

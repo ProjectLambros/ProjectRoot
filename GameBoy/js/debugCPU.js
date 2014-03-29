@@ -19,8 +19,6 @@ function sp(s,l){
 }
 
 
-//THIS WAS TAKEN FROM GB.DEBUGGER.JS
-//hopefully you can use this Austin
 function testCPU(){
 
     $('rA').innerHTML='register A:<br /> '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);

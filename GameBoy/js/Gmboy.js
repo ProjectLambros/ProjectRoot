@@ -1,6 +1,6 @@
 var RunInterval;
 var fpsInterval;
-
+/*
 function GBPause() {
 	if (gbPause) return;
 	gbPause = true;
@@ -12,4 +12,15 @@ function GBPause() {
 	//fpsInterval=setInterval(gb_Show_Fps, 1000);
 	// This needs gb frame function
 	//RunInterval=setInterval(gb_Frame,16);
+}*/
+function GBPause() {
+  if (gbPause) return;
+  gbPause=true;
+  //$('BR').disabled=0;
+  //$('BP').disabled=1;
+  //$('BS').disabled=0;
+  clearInterval(gbRunInterval);
+  clearInterval(gbFpsInterval);
+  //$('STATUS').innerHTML='Pause';
+  //gb_Dump_All();        
 }

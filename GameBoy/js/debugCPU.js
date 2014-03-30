@@ -1,5 +1,5 @@
-/* I want a function that when given fixed input the output is whatever in the cache of the cpu
-We can show this to the TA so it 1. shows functionality of our works and 2. shows our progress.
+/* I want a function that when given fixed input the output is whatever is in the cache of the cpu
+We can show this to the TA so it 1. shows functionality of how our CPU works and 2. shows our progress.
 */
 
 // Get element from id
@@ -36,11 +36,11 @@ function testCPU(){
 
 function TestOPS() {
 
-for(var i=0; i<hex(PC); i++) {
+for(var i=hex(0); i<hex(PC); i++) {
 var s =s+=zf(hex(PC),4)+': '; 
     s+=zf(hex(PC),2);
-    s+='=';
-    s+= MNcb[i]()+'<br />';
+    s+=' = ';
+    s+= MNcb[i]()+br;
 
 }
 /*

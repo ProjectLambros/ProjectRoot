@@ -35,37 +35,11 @@ function testCPU(){
 
 
 function TestOPS() {
-
+var s = "instructions 0x00-0xff: "+br;
 for(var i=hex(0); i<hex(PC); i++) {
-var s =s+=zf(hex(PC),4)+': '; 
-    s+=zf(hex(PC),2);
-    s+=' = ';
     s+= MNcb[i]()+br;
-
-}
-/*
-    var dump_asm_h = 40;
-  var s='';
-  var oPC=PC;
-  var of=0;
-  var id='';
-  var st='';
-  PC=Math.round(0xFFFF-dump_asm_h+1);
-  if (PC<=0) PC=0;
-  for (var i=0;i<dump_asm_h;i++) {
-    id='ASM_'+PC;
-    st=(oPC==PC)?' style="background:#9F9;"':'';
-    s+='<div id="'+id+'"'+st+'>';
-    s+=zf(hex(PC),4)+': ';
-    s+=zf(hex(MEMR(PC)),2)+' = ';
-    s+=MN[MEMR(PC)];
-    s+='</span></div>\n';
-    PC++;
-  }*/
-  $('OPCODESin').innerHTML=s;  
-
-//  PC=oPC;
-
+   }
+    $('OPCODESin').innerHTML=s;  
 }
 
 function RunTest() {

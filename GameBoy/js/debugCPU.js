@@ -36,7 +36,7 @@ function testCPU(){
 
 function TestOPS() {
 var s = "instructions 0x00-0xff: "+br;
-for(var i=hex(0); i<hex(PC); i++) {
+for(var i=0; i<PC; i++) {
     s+= MNcb[i]()+br;
    }
     $('OPCODESin').innerHTML=s;  

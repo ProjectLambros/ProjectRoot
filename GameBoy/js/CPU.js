@@ -181,8 +181,8 @@ function CPU_RLA() { //!!!
   'T1=CF;'+
   'CF=(rA>>7)&1;'+
   'rA=((rA<<1)&0xFF)|T1;'+
-  'SF=FH=0;'+
-  'ZF=(RA==0);'+ 
+  'SF=HF=0;'+
+  'ZF=(rA==0);'+ 
   'CPUTicks=4;';
 } 
 function SLA_R(R, C) {

@@ -39,6 +39,10 @@ position:absolute;
 margin-top: -450px;
 
 } 
+#OPCODESin {
+
+ text-align: center;
+}
 table { 
 font-family:'Bitstream Vera Sans Mono','Lucida Console','droid_monospace',monospace; 
 font-size:9pt; 

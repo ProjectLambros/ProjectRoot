@@ -33,7 +33,7 @@ RAMBanks[4] = 16;
 
 var ROMInfo = {};
 
-function gb_ROM_Load(fileName) {
+function ROM_Load(fileName) {
   BankSwitchCount = 0;    
   ROM = [];
   var i = 0;

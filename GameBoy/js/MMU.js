@@ -47,20 +47,6 @@ function MemoryReadRomOnly(a) {
 }
 var MEMR = MemoryReadRomOnly;
 
-function MemoryReadMBC1ROM(a) {
-  switch (a>>12) {
-    case 0:
-    case 1:
-    case 2:
-    case 3: return Memory[a];
-    case 4: 
-    case 5: 
-    case 6: 
-    case 7: return ROM[ROMBank1offs+a];
-    default: return Memory[a];
-  }  
-}
-
 function MEMW(a,v) {
   // Special registers+HRAM
   if (a>=0xFF00) {
@@ -127,33 +113,33 @@ function MEMW(a,v) {
       return;
     case 0x47: // FF47 BGP - Background Palette
       Memory[0xFF47]=v;
-      BackPal[0]=v&3;
-      BackPal[1]=(v>>2)&3;
-      BackPal[2]=(v>>4)&3;
-      BackPal[3]=(v>>6)&3;
+      BgPal[0]=v&3;
+      BgPal[1]=(v>>2)&3;
+      BgPal[2]=(v>>4)&3;
+      BgPal[3]=(v>>6)&3;
       return;
     case 0x48: // FF48 OBP0 - Sprite Palette 0
       Memory[0xFF48]=v;
-      SpritePal[0][0]=v&3;
-      SpritePal[0][1]=(v>>2)&3;
-      SpritePal[0][2]=(v>>4)&3;
-      SpritePal[0][3]=(v>>6)&3;
+      SprtPal[0][0]=v&3;
+      SprtPal[0][1]=(v>>2)&3;
+      SprtPal[0][2]=(v>>4)&3;
+      SprtPal[0][3]=(v>>6)&3;
       return;
     case 0x49: // FF49 OBP1 - Sprite Palette 1
       Memory[0xFF49]=v;
-      SpritePal[1][0]=v&3;
-      SpritePal[1][1]=(v>>2)&3;
-      SpritePal[1][2]=(v>>4)&3;
-      SpritePal[1][3]=(v>>6)&3;
+      SprtPal[1][0]=v&3;
+      SprtPal[1][1]=(v>>2)&3;
+      SprtPal[1][2]=(v>>4)&3;
+      SprtPal[1][3]=(v>>6)&3;
       return;            
     case 0x4A: // FF4A WY
-      Memory[0xFF4A]=gbRegWY=v;
+      Memory[0xFF4A]=RegWY=v;
       return;
     case 0x4B: // FF4B WX
-      Memory[0xFF4B]=gbRegWX=v;
+      Memory[0xFF4B]=RegWX=v;
       return;
     case 0xFF: // FFFF IE - Interrupt Enable
-      Memory[0xFFFF]=gbRegIE=(v&31);
+      Memory[0xFFFF]=RegIE=(v&31);
       return;    
     default: // THE OTHERS
       Memory[a]=v;
@@ -188,7 +174,7 @@ function MEMW(a,v) {
       }
     default:
       alert('Unknown Memory Bank Controller.\naddr: '+hex4(a)+' - val: '+hex2(v));
-      gb_Pause();
+      GBPause();
       return;   
     }
   }
@@ -196,14 +182,14 @@ function MEMW(a,v) {
   else if (Memory[a]!=v) {
     // 8000-97FF: Tile data
     if (a<0x9800) {
-      UpdateTiles=true;
-      UpdateTilesList[(a-0x8000)>>4]=true;
+      UDtiles=true;
+      UDtilesList[(a-0x8000)>>4]=true;
       Memory[a]=v;
     }
     // 9800-9FFF: Tile maps
     else if (a<0xA000) {
-      UpdateBackground=true;
-      UpdateBackgroundTileList[a-0x9800]=true;
+      UDbg=true;
+      UDbgTileList[a-0x9800]=true;
       Memory[a]=v;
     }
     // A000-BFFF: Switchable RAM

@@ -47,6 +47,20 @@ function MemoryReadRomOnly(a) {
 }
 var MEMR = MemoryReadRomOnly;
 
+function MemoryReadMBC1ROM(a) {
+  switch (a>>12) {
+    case 0:
+    case 1:
+    case 2:
+    case 3: return Memory[a];
+    case 4: 
+    case 5: 
+    case 6: 
+    case 7: return ROM[ROMBank1offs+a];
+    default: return Memory[a];
+  }  
+}
+
 function MEMW(a,v) {
   // Special registers+HRAM
   if (a>=0xFF00) {

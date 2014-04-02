@@ -4,6 +4,6 @@ var fpsInterval;
 function GBPause() {
   if (gbPause) return;
   gbPause=true;
-  clearInterval(gbRunInterval);
-  clearInterval(gbFpsInterval);
+  clearInterval(RunInterval);
+  clearInterval(FpsInterval);
 }

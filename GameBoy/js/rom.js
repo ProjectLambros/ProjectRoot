@@ -38,13 +38,13 @@ function ROM_Load(fileName) {
   ROM = [];
   var i = 0;
   var req = new XMLHttpRequest();
-  req.open('GET', fileName, false);
-  req.overrideMimeType('text/plain; charset=x-user-defined');
-  req.send(null);
-  if ((req.readyState==4)/*&&(req.status==200)*/) {
-    var s=req.responseText;
+  req.open('GET', fileName, false); //grabs the file from our roms folder
+  req.overrideMimeType('text/plain; charset=x-user-defined'); //forces the rom to be in plain text form 
+  req.send(null); // since we are useing false in our open command
+  if (req.readyState==4) { //this means that the response from the server ie. that rom folder is ready and request is finished
+    var s=req.responseText; // this loads the text into a variable 
     i=s.length;
-    while (i--) ROM[i]=s.charCodeAt(i)&0xff;
+    while (i--) ROM[i]=s.charCodeAt(i)&0xff; //gives the least significant 8 bits of the data
     i=0x8000;
     while (i--) Memory[i]=ROM[i]; // copy 2 banks into memory
   }

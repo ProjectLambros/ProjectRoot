@@ -47,6 +47,66 @@ function MemoryReadRomOnly(a) {
 }
 var MEMR = MemoryReadRomOnly;
 
+
+-function MemoryReadMBC1ROM(a) {
+ -  switch (a>>12) {
+ -    case 0:
+ -    case 1:
+ -    case 2:
+ -    case 3: return Memory[a];
+ -    case 4: 
+ -    case 5: 
+ -    case 6: 
+ -    case 7: return ROM[ROMBank1offs+a];
+ -    default: return Memory[a];
+ -  }  
+ -}
+
+function gb_Init_Memory() {
+  var i=0x100000;
+  while (i) {
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+  }
+  MEMW(0xFF00,0xFF); // P1
+  MEMW(0xFF04,0xAF); // DIV
+  MEMW(0xFF05,0x00); // TIMA
+  MEMW(0xFF06,0x00); // TMA
+  MEMW(0xFF07,0xF8); // TAC
+  MEMW(0xFF0F,0x00); // IF 
+  MEMW(0xFF10,0x80); // NR10
+  MEMW(0xFF11,0xBF); // NR11
+  MEMW(0xFF12,0xF3); // NR12
+  MEMW(0xFF14,0xBF); // NR14
+  MEMW(0xFF16,0x3F); // NR21
+  MEMW(0xFF17,0x00); // NR22
+  MEMW(0xFF19,0xBF); // NR24
+  MEMW(0xFF1A,0x7F); // NR30
+  MEMW(0xFF1B,0xFF); // NR31
+  MEMW(0xFF1C,0x9F); // NR32
+  MEMW(0xFF1E,0xBF); // NR33
+  MEMW(0xFF20,0xFF); // NR41
+  MEMW(0xFF21,0x00); // NR42
+  MEMW(0xFF22,0x00); // NR43
+  MEMW(0xFF23,0xBF); // NR30
+  MEMW(0xFF24,0x77); // NR50
+  MEMW(0xFF25,0xF3); // NR51
+  MEMW(0xFF26,0xF1); // NR52 0xF1->GB; 0xF0->SGB
+  MEMW(0xFF40,0x91); // LCDC
+  MEMW(0xFF42,0x00); // SCY
+  MEMW(0xFF43,0x00); // SCX
+  MEMW(0xFF44,0x00); // LY
+  MEMW(0xFF45,0x00); // LYC
+  MEMW(0xFF47,0xFC); // BGP
+  MEMW(0xFF48,0xFF); // OBP0
+  MEMW(0xFF49,0xFF); // OBP1
+  MEMW(0xFF4A,0x00); // WY
+  MEMW(0xFF4B,0x00); // WX
+  MEMW(0xFFFF,0x00); // IE
+}
+
 function MEMW(a,v) {
   // Special registers+HRAM
   if (a>=0xFF00) {

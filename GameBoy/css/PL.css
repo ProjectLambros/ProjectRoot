@@ -49,14 +49,14 @@ left: 3.5px;
 #DEBUGGER {
 float: left;
 position:absolute;
-margin-top: -450px;
+margin-top: -650px;
 
 }
 #OPCODES {
 float: right;
 right: 20px;
 position:absolute;
-margin-top: -450px;
+margin-top: -650px;
 
 } 
 #OPCODESin {

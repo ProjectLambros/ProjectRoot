@@ -34,8 +34,9 @@ left: 3.5px;
 #screen{
     border: 1px solid green;
     position:relative;
-    top: 56px;
-    z-index: 20;
+    top: -488px;
+    left: 10px;
+    z-index: 100;
     margin:3px; 
     padding:2px; 
     image-rendering:-webkit-optimizeSpeed;

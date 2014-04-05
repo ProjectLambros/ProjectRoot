@@ -75,3 +75,8 @@ function ROM_Load(fileName) {
   }
 
 }
+
+function ROMBankSwitch(bank) {
+	BankSwitchCount++;
+	ROMBank1offs = (bank==0)?0:(--bank*0x4000); //new ROM Bank 1 address
+}

@@ -19,6 +19,6 @@ function Insert_Cartridge(fileName, Start) {
 //  Init_Input();
 RunTest();
   ROM_Load('roms/'+fileName);
-  if (Start) $('BR').onclick();
-  else $('BP').onclick();
+  //if (Start) $('BR').onclick();
+  //else $('BP').onclick();
 }

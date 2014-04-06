@@ -2,7 +2,7 @@ var ROM = [];
 var CartridgeType = 0; 
 var BankSwitchCount = 0;
 
-var _ROM_ONLY = 0x00;
+var _ROM_ONLY_ = 0x00;
 var _ROM_MBC1_ = 0x01;
 
 var MBC1Mode = 0;

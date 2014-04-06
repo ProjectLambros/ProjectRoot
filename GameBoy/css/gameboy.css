@@ -280,7 +280,7 @@
 #gameboy-buttons {
     z-index: 1;
     float:left;
-    margin:46px 0 0 82px;
+    margin:-66px 0 0 190px;
     color:#230081;
     font-weight:bold;
     font-family:Tahoma;
@@ -290,15 +290,16 @@
 }
 #gameboy-buttons span:nth-child(2) {
     z-index: 1;
-    margin-left:30px;
+    margin-left:-10px;
 }
 #gameboy-buttons span:nth-child(3) {
     z-index: 1;
-    margin-left:54px;
+    margin-left:20px;
 }
 #gameboy-buttons-inset {
     z-index: 1;
     margin-bottom:5px;
+    margin-right: 20px;
     padding:7px;
     border-radius:28px;
     background:#F7F7F7;
@@ -332,7 +333,7 @@
     z-index: 1;
     width:200px;
     height:60px;
-    margin:44px 0 0 100px;
+    margin:44px 0 0 60px;
     color:#230081;
     font-weight:bold;
     font-family:Tahoma;
@@ -357,19 +358,21 @@
     border-radius:5px;
     box-shadow:inset 2px -2px 2px #BFBFBF, inset -2px 2px 2px #000;
 }
+#spkcntn { 
+margin:30px 20px 0 210px;
+}
 #gameboy-speaker {
-    z-index: 1;
+    z-index: 10;
     position:absolute;
-    margin:40px 0 0 215px;
     -moz-transform:rotate(324deg);
     -webkit-transform:rotate(324deg);
 }
 #gameboy-speaker div {
-    z-index: 1;
+    z-index: 10;
     float:left;
-    width:7px;
+    width:6px;
     height:70px;
-    margin:5px 6px 0 6px;
+    margin:18px 6px 0 6px;
     border-radius:4px;
     background-color:#C8C8C8;
     box-shadow:inset 2px -2px 2px #898989;

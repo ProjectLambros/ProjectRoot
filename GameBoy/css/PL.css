@@ -41,6 +41,18 @@ left: 3.5px;
     padding:2px; 
     image-rendering:-webkit-optimizeSpeed;
 }
+.GAMES {
+border: 0;
+} 
+.GAMES td {
+
+	border: none;
+}
+#GAMES_L {
+top: -600px;
+left: 250px;
+position: relative;   
+}
 .center {
  text-align: center;
  float: center;

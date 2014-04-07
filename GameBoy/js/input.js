@@ -47,7 +47,7 @@ if (e.keyCode == 83) {
     Pin14&=0xF7; 
     MEMW(_IF_,RegIF|16);
     e.preventDefault();
-    
+}    
     
 // left
  if (e.keyCode == 37) {
@@ -111,6 +111,7 @@ if (e.keyCode == 83) {
     Pin14&=8; 
     MEMW(_IF_,RegIF|16);
     e.preventDefault();
+}
     
     
 // left

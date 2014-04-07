@@ -39,6 +39,21 @@ var s = "instructions 0x00-0xff: "+br;
 for(var i=0; i<PC; i++) {
     s+= MNcb[i]()+br;
    }
+	OP[4]();
+	if(rB > 64){
+	OP[0x42]();
+	OP[0x14]();
+	}
+	
+    $('rA').innerHTML='register A:<br /> '+zf(hex(rA),2)+br+sp(zf(bin(rA),8),4);
+    $('rB').innerHTML='register B:<br /> '+zf(hex(rB),2)+br+sp(zf(bin(rB),8),4);
+    $('rC').innerHTML='register C:<br /> '+zf(hex(rC),2)+br+sp(zf(bin(rC),8),4);
+    $('rD').innerHTML='register D:<br /> '+zf(hex(rD),2)+br+sp(zf(bin(rD),8),4);
+    $('rE').innerHTML='register E:<br /> '+zf(hex(rE),2)+br+sp(zf(bin(rE),8),4);
+    $('HL').innerHTML='registers H and L:<br /> '+zf(hex(HL),4)+br+sp(zf(bin(HL),16),4);
+    $('SP').innerHTML='Stack Pointer:<br /> '+zf(hex(SP),4)+br+sp(zf(bin(SP),16),4);
+    $('PC').innerHTML='Program Counter:<br /> '+zf(hex(PC),4)+br+sp(zf(bin(PC),16),4);
+    $('rF').innerHTML='Flags:<br />Z:'+(ZF*1)+' S:'+(SF*1)+'<br/'+'>H:'+(HF*1)+' C:'+(CF*1);
     $('OPCODESin').innerHTML=s;  
 }
 

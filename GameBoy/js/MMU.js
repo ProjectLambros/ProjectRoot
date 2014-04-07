@@ -42,10 +42,9 @@ var _ECHO_ = 0xE000; // echo of internal RAM
 var _OAM_  = 0xFE00; // object attribute
 
 
-function MemoryReadRomOnly(a) {
+function MEMR(a) { // MemoryReadRomOnly
   return Memory[a];
 }
-var MEMR = MemoryReadRomOnly;
 
 
 function MemoryReadMBC1ROM(a) {

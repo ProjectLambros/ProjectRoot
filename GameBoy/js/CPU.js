@@ -145,8 +145,10 @@ function DAA() { //DAA Table usage
 function CPU_RLC(n) {
   CF=(n>>7)&1;
   n=((n<<1)&0xFF)|CF;
-  SF=HF=0;
-  ZF=(n==0);
+  SF=0;
+  HF=0;
+  ZF=true;
+  if(n==0)ZF=false;
   CPUTicks=8;
   return n;
 }
@@ -154,8 +156,10 @@ function CPU_RL(n) {
   T1=CF;
   CF=(n>>7)&1;
   n=((n<<1)&0xFF)|T1;
-  SF=HF=0;
-  ZF=(n==0);
+  SF=0;
+  HF=0;
+  ZF=true;
+  if(n==0)ZF=false;
   CPUTicks=8;
   return n;
 }
@@ -163,16 +167,20 @@ function CPU_RR(n) {
   T1=CF;
   CF=n&1;
   n=(n>>1)|(T1<<7);
-  SF=HF=0;
-  ZF=(n==0);
+  SF=0;
+  HF=0;
+  ZF=true;
+  if(n==0)ZF=false;
   CPUTicks=8;
   return n;
 }
 function CPU_RRC(n) {
   CF=n&1;
   n=(n>>1)|(CF<<7);
-  SF=HF=0;
-  FZ=(n==0);
+  SF=0;
+  HF=0;
+  FZ=true;
+  if(n==0)FZ=false;
   CPUTicks=8;
   return n;
 }
@@ -1071,7 +1079,7 @@ for (var i=0;i<8;i++) {
 Decimal Adjust register A. This instruction adjusts register A so that the
 correct representation of Binary Coded Decimal (BCD) is obtained.
 */
-var DAAtable= [ // DAA table. I'm pretty sure There is a better way to do this. If anyone figures it out, please refactor this...
+var DAAtable= [ //DAA Table, tried to refactor. Table doesn't seem to count by any identifiable amount, so a simple FOR won't fix.
   0x0080,0x0100,0x0200,0x0300,0x0400,0x0500,0x0600,0x0700,
   0x0800,0x0900,0x1020,0x1120,0x1220,0x1320,0x1420,0x1520,
   0x1000,0x1100,0x1200,0x1300,0x1400,0x1500,0x1600,0x1700,

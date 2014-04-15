@@ -126,7 +126,8 @@ function Draw_Scanline() {
 function Init_LCD() {
 
 }
-  
+
+//When other functions are completed, this should be deleted, or moved to debudCPU.js   
 function Canvas() {
 
 var Output = "CPU regs, SP, and PC values";

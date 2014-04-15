@@ -57,15 +57,23 @@ var Output3 = "start(A key) is pressed";
 var Output4 = "Opcodes will be shown on";
 var Output5 = "the right when select(S key)";
 var Output6 = "is pressed";
+var Output7 = "Hold down S to watch our";
+var Output8 = "register values change as";
+var Output9 = "the CPU runs";
+
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";
-ctx.fillText(Output,10,30);
-ctx.fillText(Output2,16,40);
-ctx.fillText(Output3,22,50);
-ctx.fillText(Output4,14,70);
-ctx.fillText(Output5,10,80);
-ctx.fillText(Output6,50,90);
+ctx.fillText(Output,10,10);
+ctx.fillText(Output2,16,20);
+ctx.fillText(Output3,22,30);
+ctx.fillText(Output4,14,60);
+ctx.fillText(Output5,10,70);
+ctx.fillText(Output6,50,80);
+ctx.fillText(Output7,20,100);
+ctx.fillText(Output8,20,110);
+ctx.fillText(Output9,50,120);
+
 
 }
 

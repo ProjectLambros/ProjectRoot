@@ -62,8 +62,10 @@ function RunTest() {
   GBPause();
   gbSeconds = 0;
   gbFrames  = 0;
-  Init_Input()
   Init_CPU();
+  Init_Memory();
+  Init_Interrupts();
+  Init_Input()
   Canvas();
 }
 var CPUdebugReg = 

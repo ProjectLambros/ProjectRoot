@@ -1,6 +1,14 @@
 var Pin14=0; // up down left right
 var Pin15=0; // start select a b
 
+function Read_Joypad(v) {
+  switch ((v>>4)&3) {
+    case 0: Memory[_P1_]=Pin14 & Pin15; return; // TODO not sure on this
+    case 1: Memory[_P1_]=Pin15; return;
+    case 2: Memory[_P1_]=Pin14; return;
+    case 3: Memory[_P1_]=0xFF; return; // TODO not sure on this
+  }
+}
 
 function OnKeyDown(e) {
     // start

@@ -48,6 +48,84 @@ function Update_Tile_Data() {
 	}
 	UDtiles = false;
 }
+
+function Update_Background() {
+ var tile0 = 0; // tile index for tiledata at 8000+(unsigned byte)
+  var tile1 = 0; // tile index for tiledata at 8800+(signed byte)
+  var x  = 0;
+  var y  = 0;
+  var z  = 0;
+  var dy = 0;
+  var addr = 0x9800;
+  var tileline;
+  var backline;
+  
+  for (var i=0;i<2048;i++) {
+    tile0 = Memory[addr++];
+    tile1 = 256+sb(tile0);
+    if (UDbgTileList[i] || UDbgDataList[tile0]) {
+      dy = 8;
+      while (dy--) { 
+        z = x;
+        tileline=TileData[tile0][dy];
+        backline=bgData[y+dy];
+        backline[z++] = tileline[0];
+        backline[z++] = tileline[1];
+        backline[z++] = tileline[2];
+        backline[z++] = tileline[3];
+        backline[z++] = tileline[4];
+        backline[z++] = tileline[5];
+        backline[z++] = tileline[6];
+        backline[z++] = tileline[7];        
+      }
+    }
+    if (UDbgTileList[i] || UDbgDataList[tile1]) {
+      dy = 8;
+      while (dy--) { 
+        z = 256+x;
+        tileline = TileData[tile1][dy];
+        backline = bgData[y+dy];
+        backline[z++] = tileline[0];
+        backline[z++] = tileline[1];
+        backline[z++] = tileline[2];
+        backline[z++] = tileline[3];
+        backline[z++] = tileline[4];
+        backline[z++] = tileline[5];
+        backline[z++] = tileline[6];
+        backline[z++] = tileline[7];        
+      }
+    }
+    UDbgTileList[i] = false;
+    if ((x+=8)>=256) { x=0; y+=8; }
+  }
+  for (i=0;i<384;i++) UDbgDataList[i]=false;
+  UDbg = false;
+}
+
+//This needs done
+function Framebuffer_to_LCD() {
+
+}
+
+//This needs done
+function Clear_Scanline() {
+
+}
+
+//This needs done
+function Clear_Framebuffer() {
+
+}
+
+//This needs done
+function Draw_Scanline() {
+
+}
+
+//This needs done
+function Init_LCD() {
+
+}
   
 function Canvas() {
 

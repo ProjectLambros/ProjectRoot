@@ -61,7 +61,7 @@ function MemoryReadMBC1ROM(a) {
    }  
  }
 
-function gb_Init_Memory() {
+function Init_Memory() {
   var i=0x100000;
   while (i) {
     Memory[--i] = 0;

@@ -18,13 +18,13 @@
 
 
 var RunInterval;
-var fpsInterval;
+//var fpsInterval;
 
 function GBPause() {
   if (gbPause) return;
   gbPause=true;
   clearInterval(RunInterval);
-  clearInterval(FpsInterval);
+  //clearInterval(FpsInterval);
 }
 
 
@@ -45,6 +45,6 @@ function Insert_Cartridge(fileName, Start) {
   Canvas();
 //RunTest();
   ROM_Load('roms/'+fileName);
-  //if (Start) $('BR').onclick();
-  //else $('BP').onclick();
+  //FpsInterval=setInterval(Show_Fps,1000);
+  RunInterval=setInterval(Frame,16);
 }

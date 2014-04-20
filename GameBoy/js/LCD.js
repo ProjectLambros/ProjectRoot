@@ -1,5 +1,23 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *   Project Lambros Game Boy CPU.js					   *
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the          *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   The full license is available at http://www.gnu.org/licenses/gpl.html *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+
 var TileData = []; // tile data arrays
-var BackgroundData = [];
+var bgData = []; // background data
 var screenObj; // screen Object
 var screenCtx; // screen Context
 var FrameBuffer = [];
@@ -11,85 +29,64 @@ var FPS = 0; // Frames per second counter
 var EndFrame = false;
 var CurrentWinLine=0;
 
-var UpdateTiles  = false;
-var UpdateTilesList = [];
-var UpdateBackground  = false 
-var UpdateBackgroundTileList = [];
-var UpdateBackgroundDataList = [];
+var UDtiles  = false; //update tiles
+var UDtilesList = [];  //update tiles list
+var UDbg  = false; //Update background 
+var UDbgTileList = []; //update background tile list
+var UDbgDataList = []; //update background data list
 
-var BackPal   = []; // BGP pallete - initialized in jsgb.memory.js
-var SpritePal = [[],[]]; // palettes OBP0 and OBP1 - for sprites
+var BgPal   = []; // BGP pallete - should be initialized in MMU.js
+var SprtPal = [[],[]]; // Sprite palettes OBP0 and OBP1 - for sprites
 var Colors    = [[0xEF,0xFF,0xDE],[0xAD,0xD7,0x94],
                    [0x52,0x92,0x73],[0x18,0x34,0x42]];
 
 
-function Canvas() {
-
-var Output = "CPU regs, SP, and PC values";
-var Output2 = "will be shown to the left if";
-var Output3 = "start(A key) is pressed";
-
-  // loop tiles and redraw if needed
-  for (var i=0;i<384;i++) if (UpdateTilesList[i]) { 
-    Output=0x8000+i*16;
-    for (j=0; j<8; j++) {     
-      
-      line = gbMemory[Output++];
-      line|= gbMemory[Output++] << 8;
-      TileData[i][j][0] = ((line & 0x8080) + 0x3FFF) >> 14;
-      TileData[i][j][1] = ((line & 0x4040) + 0x1FFF) >> 13;
-      TileData[i][j][2] = ((line & 0x2020) + 0x0FFF) >> 12;
-      TileData[i][j][3] = ((line & 0x1010) + 0x07FF) >> 11;
-      TileData[i][j][4] = ((line & 0x0808) + 0x03FF) >> 10;
-      TileData[i][j][5] = ((line & 0x0404) + 0x01FF) >> 9;
-      TileData[i][j][6] = ((line & 0x0202) + 0x00FF) >> 8;
-      TileData[i][j][7] = ((line & 0x0101) + 0x007F) >> 7;   
-    }
-    // mark this tile for update in gb_Update_Background()
-    UpdateBackgroundDataList[i] = UpdateBackground = true;
-    UpdateTilesList[i] = false;
-  }
-  UpdateTiles=false;
+function Update_Tile_Data() {
+	var tda = 0;	//tile data address
+	var line = 0;	//2 byte line
+	var j = 0;
+	//Loop tiles and see if redraw is needed
+	for (var i=0;i<384;i++) if (UDtilesList[i]) {
+		tda=0x8000+i*16;
+			for (j=0; j<8; j++) { //Loop 8 lines
+				line = Memory[tda++];
+				line|= Memory[tda++] << 8;
+				TileData[i][j][0] = ((line & 0x8080) + 0x3FFF) >> 14;
+				TileData[i][j][1] = ((line & 0x4040) + 0x1FFF) >> 13;
+				TileData[i][j][2] = ((line & 0x2020) + 0x0FFF) >> 12;
+				TileData[i][j][3] = ((line & 0x1010) + 0x07FF) >> 11;
+				TileData[i][j][4] = ((line & 0x0808) + 0x03FF) >> 10;
+				TileData[i][j][5] = ((line & 0x0404) + 0x01FF) >> 9;
+				TileData[i][j][6] = ((line & 0x0202) + 0x00FF) >> 8;
+				TileData[i][j][7] = ((line & 0x0101) + 0x007F) >> 7; 
+			}
+		// marking these tiles for update in Update_Background()
+		UDbgDataList[i] = UDbg = true;
+		UDtilesList[i] = false;
+	}
+	UDtiles = false;
 }
 
-
-//var Output = "CPU regs, SP, and PC values";
-//var Output2 = "will be shown to the left if";
-//var Output3 = "start(A key) is pressed";
-
-//var c=document.getElementById("screen");
-
-//var ctx=c.getContext("2d");
-
-//ctx.font="10px Arial";
-//ctx.fillText(Output,10,30);
-//ctx.fillText(Output2,16,40);
-//ctx.fillText(Output3,22,50);
-
-
-
 function Update_Background() {
-
-  var T0= 0; 
-  var T1 = 0; 
+ var T0 = 0; // tile index for tiledata at 8000+(unsigned byte)
+  var T1 = 0; // tile index for tiledata at 8800+(signed byte)
   var x  = 0;
   var y  = 0;
   var z  = 0;
-  var dy = 0;
+  var DY = 0;
   var addr = 0x9800;
   var Tline;
   var Bline;
   
   for (var i=0;i<2048;i++) {
-    T0 = gbMemory[addr++];
-    T1 = 256+sb(tile0);
-    
-    if (UpdateBackgroundTileList[i] || UpdateBackgroundDataList[tile0]) {
+    T0 = Memory[addr++];
+    T1 = 256+sb(T0);
+    if (UDbgTileList[i] || UDbgDataList[T0]) {
       DY = 8;
       while (DY--) { 
         z = x;
-        Tline=TileData[tile0][DY];
-        Bline=BackgroundData[y+DY];
+        Tline=TileData[T0][DY];
+        Bline=bgData[y+DY];
         Bline[z++] = Tline[0];
         Bline[z++] = Tline[1];
         Bline[z++] = Tline[2];
@@ -100,12 +97,12 @@ function Update_Background() {
         Bline[z++] = Tline[7];        
       }
     }
-    if (UpdateBackgroundTileList[i] || UpdateBackgroundDataList[tile1]) {
+    if (UDbgTileList[i] || UDbgDataList[T1]) {
       DY = 8;
       while (DY--) { 
         z = 256+x;
         Tline = TileData[T1][DY];
-        Bline = BackgroundData[y+DY];
+        Bline = bgData[y+DY];
         Bline[z++] = Tline[0];
         Bline[z++] = Tline[1];
         Bline[z++] = Tline[2];
@@ -116,13 +113,13 @@ function Update_Background() {
         Bline[z++] = Tline[7];        
       }
     }
-    UpdateBackgroundTileList[i] = false;
+    UDbgTileList[i] = false;
     if ((x+=8)>=256) { x=0; y+=8; }
   }
-  for (i=0;i<384;i++) UpdateBackgroundDataList[i]=false;
-  UpdateBackground = false;
+  for (i=0;i<384;i++) UDbgDataList[i]=false;
+  UDbg = false;
 }
-
+  
 /////////////////////
 function Framebuffer_to_LCD() {
   var x = 92160; 
@@ -183,8 +180,8 @@ function Draw_Scanline() {
 
   if (RegLY==0) {
     CurrentWinLine=0;
-    if (UpdateTiles) Update_Tile_Data();
-    if (UpdateBackground) Update_Background();
+    if (UDtiles) Update_Tile_Data();
+    if (UDbg) Update_Background();
   }
   
   // Draw BGround
@@ -193,17 +190,17 @@ function Draw_Scanline() {
     y = RegLCDC_BackgroundYOffs+((RegSCY+RegLY)%256);
     x = 160+offset;
     i = 160;
-    line = BackgroundData[y];
+    line = bgData[y];
     // copy BGround line to framebuffer
     while (x>offset) { 
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
-      FrameBuffer[--x] = BackPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
     }
 
     // Draw Window - TODO this could be buggy
@@ -211,10 +208,10 @@ function Draw_Scanline() {
       y = RegLCDC_WindowYOffs+CurrentWinLine;
       i = RegWX-7+offset;
       j = (i<0)?-i:0;
-      line = BackgroundData[y];
+      line = bgData[y];
       // copy window line to framebuffer
       for (x=j; x<167-gbRegWX; x++) {
-        FrameBuffer[x+i] = BackPal[line[RegLCDC_BackgroundXOffs+x]];
+        FrameBuffer[x+i] = BgPal[line[RegLCDC_BackgroundXOffs+x]];
       }
       CurrentWinLine++;
     }
@@ -232,19 +229,19 @@ function Draw_Scanline() {
     var pal;
     j=40;
     while (j--) { 
-      y=gbMemory[addr++]-16;
+      y=Memory[addr++]-16;
       // check Y pos
       if ((RegLY>=y) && (RegLY<(y+RegLCDC_SpriteSize))) {
         // TODO handle Y flipped sprites with size = 16
-        x=gbMemory[addr++]-8;
+        x=Memory[addr++]-8;
         // check X pos
         if ((x>-8) && (x<160)) {
           count++;
-          tile  = gbMemory[addr++];
-          flags = gbMemory[addr++];
+          tile  = Memory[addr++];
+          flags = Memory[addr++];
           hide  = (flags>>7)&1;
           flip  = (flags>>5)&3;
-          pal   = SpritePal[(flags>>4)&1];
+          pal   = SprtPal[(flags>>4)&1];
           if (RegLCDC_SpriteSize==16) {
             tile&=0xFE;
             if (RegLY>=(y+8)) { // if it's the 2nd half of the sprite
@@ -307,30 +304,30 @@ function Draw_Scanline() {
 function Init_LCD() {
   ScanlineCycles = 0;
   // init LCD Screen variables
-  LCDObj=$('LCD');
-  LCDCtx=LCDObj.getContext('2d');
-  LCDCtx.width=160;
-  LCDCtx.height=144;
-  LCDCtx.fillStyle='rgb('+Colors[0][0]+','+Colors[0][1]+','+Colors[0][2]+')';
-  LCDCtx.fillRect(0,0,160,144);
+  screenObj=$('LCD');
+  screenCtx=LCDObj.getContext('2d');
+  screenCtx.width=160;
+  screenCtx.height=144;
+  screenCtx.fillStyle='rgb('+Colors[0][0]+','+Colors[0][1]+','+Colors[0][2]+')';
+  screenCtx.fillRect(0,0,160,144);
   // get LCD scanline canvas data
-  LCDImage = LCDCtx.getImageData(0,0,160,144);
-  LCDImageData = LCDImage.data;
+  Image = screenCtx.getImageData(0,0,160,144);
+  ImageData = Image.data;
   // update tiles info
-  UpdateTiles = false;
+  UDtiles = false;
   for (var i=0; i<384; i++) {
-    UpdateTilesList[i]=false;   
-    UpdateBackgroundDataList[i]=false;
+    UDbgTilesList[i]=false;   
+    UDbgDataList[i]=false;
   }  
   // update bg info
-  UpdateBackground = false;
+    UDbg  = false;
   for (var i=0; i<2048; i++) {
-    UpdateBackgroundTileList[i] = false;
+   UDbgTileList[i] = false;
   }
   // create Background lines
   for (var j=0; j<512; j++) {
-    BackgroundData[j] = [];
-    for (var i=0; i<512; i++) BackgroundData[j][i] = 0;
+    bgData[j] = [];
+    for (var i=0; i<512; i++) bgData[j][i] = 0;
   }  
   // create Tiles
   for (var i=0; i<384; i++) {
@@ -343,6 +340,32 @@ function Init_LCD() {
   }
   // fill frame buffer
   Clear_Framebuffer();
+
+
+/*
+=======
+var Output4 = "Opcodes will be shown on";
+var Output5 = "the right when select(S key)";
+var Output6 = "is pressed";
+var Output7 = "Hold down S to watch our";
+var Output8 = "register values change as";
+var Output9 = "the CPU runs";
+
+var c=document.getElementById("screen");
+var ctx=c.getContext("2d");
+ctx.font="10px Arial";
+ctx.fillText(Output,10,10);
+ctx.fillText(Output2,16,20);
+ctx.fillText(Output3,22,30);
+ctx.fillText(Output4,14,60);
+ctx.fillText(Output5,10,70);
+ctx.fillText(Output6,50,80);
+ctx.fillText(Output7,20,100);
+ctx.fillText(Output8,20,110);
+ctx.fillText(Output9,50,120);
+
+>>>>>>> FETCH_HEAD
+*/
 
 }
 

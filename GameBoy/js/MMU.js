@@ -1,3 +1,22 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *   Project Lambros Game Boy MMU.js                                       *
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the          *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   The full license is available at http://www.gnu.org/licenses/gpl.html *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+
+
 var Memory = new Array(0x10000);
 
 // special register mirror values and bit states
@@ -45,10 +64,69 @@ var _ECHO_ = 0xE000; // echo of internal RAM
 var _OAM_  = 0xFE00; // object attribute
 
 
-function MemoryReadRomOnly(a) {
+function MEMR(a) { // MemoryReadRomOnly
   return Memory[a];
 }
-var MEMR = MemoryReadRomOnly;
+
+
+function MemoryReadMBC1ROM(a) {
+   switch (a>>12) {
+     case 0:
+     case 1:
+     case 2:
+     case 3: return Memory[a];
+     case 4: 
+     case 5: 
+     case 6: 
+     case 7: return ROM[ROMBank1offs+a];
+     default: return Memory[a];
+   }  
+ }
+
+function Init_Memory() {
+  var i=0x100000;
+  while (i) {
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+  }
+  MEMW(0xFF00,0xFF); // P1
+  MEMW(0xFF04,0xAF); // DIV
+  MEMW(0xFF05,0x00); // TIMA
+  MEMW(0xFF06,0x00); // TMA
+  MEMW(0xFF07,0xF8); // TAC
+  MEMW(0xFF0F,0x00); // IF 
+  MEMW(0xFF10,0x80); // NR10
+  MEMW(0xFF11,0xBF); // NR11
+  MEMW(0xFF12,0xF3); // NR12
+  MEMW(0xFF14,0xBF); // NR14
+  MEMW(0xFF16,0x3F); // NR21
+  MEMW(0xFF17,0x00); // NR22
+  MEMW(0xFF19,0xBF); // NR24
+  MEMW(0xFF1A,0x7F); // NR30
+  MEMW(0xFF1B,0xFF); // NR31
+  MEMW(0xFF1C,0x9F); // NR32
+  MEMW(0xFF1E,0xBF); // NR33
+  MEMW(0xFF20,0xFF); // NR41
+  MEMW(0xFF21,0x00); // NR42
+  MEMW(0xFF22,0x00); // NR43
+  MEMW(0xFF23,0xBF); // NR30
+  MEMW(0xFF24,0x77); // NR50
+  MEMW(0xFF25,0xF3); // NR51
+  MEMW(0xFF26,0xF1); // NR52 0xF1->GB; 0xF0->SGB
+  MEMW(0xFF40,0x91); // LCDC
+  MEMW(0xFF42,0x00); // SCY
+  MEMW(0xFF43,0x00); // SCX
+  MEMW(0xFF44,0x00); // LY
+  MEMW(0xFF45,0x00); // LYC
+  MEMW(0xFF47,0xFC); // BGP
+  MEMW(0xFF48,0xFF); // OBP0
+  MEMW(0xFF49,0xFF); // OBP1
+  MEMW(0xFF4A,0x00); // WY
+  MEMW(0xFF4B,0x00); // WX
+  MEMW(0xFFFF,0x00); // IE
+}
 
 function MEMW(a,v) {
   // Special registers+HRAM
@@ -116,33 +194,33 @@ function MEMW(a,v) {
       return;
     case 0x47: // FF47 BGP - Background Palette
       Memory[0xFF47]=v;
-      BackPal[0]=v&3;
-      BackPal[1]=(v>>2)&3;
-      BackPal[2]=(v>>4)&3;
-      BackPal[3]=(v>>6)&3;
+      BgPal[0]=v&3;
+      BgPal[1]=(v>>2)&3;
+      BgPal[2]=(v>>4)&3;
+      BgPal[3]=(v>>6)&3;
       return;
     case 0x48: // FF48 OBP0 - Sprite Palette 0
       Memory[0xFF48]=v;
-      SpritePal[0][0]=v&3;
-      SpritePal[0][1]=(v>>2)&3;
-      SpritePal[0][2]=(v>>4)&3;
-      SpritePal[0][3]=(v>>6)&3;
+      SprtPal[0][0]=v&3;
+      SprtPal[0][1]=(v>>2)&3;
+      SprtPal[0][2]=(v>>4)&3;
+      SprtPal[0][3]=(v>>6)&3;
       return;
     case 0x49: // FF49 OBP1 - Sprite Palette 1
       Memory[0xFF49]=v;
-      SpritePal[1][0]=v&3;
-      SpritePal[1][1]=(v>>2)&3;
-      SpritePal[1][2]=(v>>4)&3;
-      SpritePal[1][3]=(v>>6)&3;
+      SprtPal[1][0]=v&3;
+      SprtPal[1][1]=(v>>2)&3;
+      SprtPal[1][2]=(v>>4)&3;
+      SprtPal[1][3]=(v>>6)&3;
       return;            
     case 0x4A: // FF4A WY
-      Memory[0xFF4A]=gbRegWY=v;
+      Memory[0xFF4A]=RegWY=v;
       return;
     case 0x4B: // FF4B WX
-      Memory[0xFF4B]=gbRegWX=v;
+      Memory[0xFF4B]=RegWX=v;
       return;
     case 0xFF: // FFFF IE - Interrupt Enable
-      Memory[0xFFFF]=gbRegIE=(v&31);
+      Memory[0xFFFF]=RegIE=(v&31);
       return;    
     default: // THE OTHERS
       Memory[a]=v;
@@ -177,7 +255,7 @@ function MEMW(a,v) {
       }
     default:
       alert('Unknown Memory Bank Controller.\naddr: '+hex4(a)+' - val: '+hex2(v));
-      gb_Pause();
+      GBPause();
       return;   
     }
   }
@@ -185,14 +263,14 @@ function MEMW(a,v) {
   else if (Memory[a]!=v) {
     // 8000-97FF: Tile data
     if (a<0x9800) {
-      UpdateTiles=true;
-      UpdateTilesList[(a-0x8000)>>4]=true;
+      UDtiles=true;
+      UDtilesList[(a-0x8000)>>4]=true;
       Memory[a]=v;
     }
     // 9800-9FFF: Tile maps
     else if (a<0xA000) {
-      UpdateBackground=true;
-      UpdateBackgroundTileList[a-0x9800]=true;
+      UDbg=true;
+      UDbgTileList[a-0x9800]=true;
       Memory[a]=v;
     }
     // A000-BFFF: Switchable RAM

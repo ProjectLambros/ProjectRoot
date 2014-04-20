@@ -1,4 +1,23 @@
-body {background-image:url('https://csce.uark.edu/~raw013/PICS/BG.png');}
+body {
+/* IE10 Consumer Preview */ 
+background-image: -ms-radial-gradient(center, ellipse farthest-corner, #FFFFFF 0%, #7D7A79 100%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-radial-gradient(center, ellipse farthest-corner, #FFFFFF 0%, #7D7A79 100%);
+
+/* Opera */ 
+background-image: -o-radial-gradient(center, ellipse farthest-corner, #FFFFFF 0%, #7D7A79 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(radial, center center, 0, center center, 499, color-stop(0, #FFFFFF), color-stop(1, #7D7A79));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #FFFFFF 0%, #7D7A79 100%);
+
+/* W3C Markup, IE10 Release Preview */ 
+background-image: radial-gradient(ellipse farthest-corner at center, #FFFFFF 0%, #7D7A79 100%);
+
+}
 
 #container{
     display:inline-block;
@@ -15,15 +34,65 @@ left: 3.5px;
 #screen{
     border: 1px solid green;
     position:relative;
-    top: 56px;
-    z-index: 20;
+    top: -488px;
+    left: 10px;
+    z-index: 100;
     margin:3px; 
     padding:2px; 
     image-rendering:-webkit-optimizeSpeed;
+}
+.GAMES {
+border: 0;
+} 
+.GAMES td {
+
+	border: none;
+}
+#GAMES_L {
+top: -600px;
+left: 250px;
+position: relative;   
 }
 .center {
  text-align: center;
  float: center;
  margin: 0px auto;
 }
- 
+#DEBUGGER {
+float: left;
+position:absolute;
+margin-top: -650px;
+
+}
+#OPCODES {
+float: right;
+right: 20px;
+position:absolute;
+margin-top: -650px;
+
+} 
+#OPCODESin {
+
+ text-align: center;
+}
+table { 
+font-family:'Bitstream Vera Sans Mono','Lucida Console','droid_monospace',monospace; 
+font-size:9pt; 
+margin:0px; 
+}
+thead { 
+text-align:center; 
+}
+th { 
+font-family:sans-serif; 
+padding:2px 0px 4px 0px; 
+font-size:10pt;
+}
+th, td { 
+border:1px solid #000; 
+}
+hr { 
+border:none;
+border-bottom:1px solid #000;
+margin:1px 0px;
+}

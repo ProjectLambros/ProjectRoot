@@ -1,15 +1,50 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *   Project Lambros Game Boy Gmboy.js                                     *
+ *                                                                         *
+ *   This program is free software: you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation, either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the          *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   The full license is available at http://www.gnu.org/licenses/gpl.html *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+
+
 var RunInterval;
-var fpsInterval;
+//var fpsInterval;
 
 function GBPause() {
-	if (gbPause) return;
-	gbPause = true;
-	//No clue what the below does
-	$('BR').disabled=1;
-	$('BP').disabled=0;
-	$('BS').disabled=1;
-	// This needs show fps function not sure where to find nor do it
-	//fpsInterval=setInterval(gb_Show_Fps, 1000);
-	// This needs gb frame function
-	//RunInterval=setInterval(gb_Frame,16);
+  if (gbPause) return;
+  gbPause=true;
+  clearInterval(RunInterval);
+  //clearInterval(FpsInterval);
+}
+
+
+function Insert_Cartridge(fileName, Start) {
+  GBPause();
+  Seconds = 0;
+  Frames  = 0;
+//  Init_LCD();
+//  Init_CPU();
+//  Init_Input();
+  GBPause();
+  gbSeconds = 0;
+  gbFrames  = 0;
+  Init_CPU();
+  Init_Memory();
+  Init_Interrupts();
+  Init_Input()
+  Canvas();
+//RunTest();
+  ROM_Load('roms/'+fileName);
+  //FpsInterval=setInterval(Show_Fps,1000);
+  RunInterval=setInterval(Frame,16);
 }

@@ -68,49 +68,49 @@ function Update_Tile_Data() {
 }
 
 function Update_Background() {
- var tile0 = 0; // tile index for tiledata at 8000+(unsigned byte)
-  var tile1 = 0; // tile index for tiledata at 8800+(signed byte)
+ var T0 = 0; // tile index for tiledata at 8000+(unsigned byte)
+  var T1 = 0; // tile index for tiledata at 8800+(signed byte)
   var x  = 0;
   var y  = 0;
   var z  = 0;
-  var dy = 0;
+  var DY = 0;
   var addr = 0x9800;
-  var tileline;
-  var backline;
+  var Tline;
+  var Bline;
   
   for (var i=0;i<2048;i++) {
-    tile0 = Memory[addr++];
-    tile1 = 256+sb(tile0);
-    if (UDbgTileList[i] || UDbgDataList[tile0]) {
-      dy = 8;
-      while (dy--) { 
+    T0 = Memory[addr++];
+    T1 = 256+sb(T0);
+    if (UDbgTileList[i] || UDbgDataList[T0]) {
+      DY = 8;
+      while (DY--) { 
         z = x;
-        tileline=TileData[tile0][dy];
-        backline=bgData[y+dy];
-        backline[z++] = tileline[0];
-        backline[z++] = tileline[1];
-        backline[z++] = tileline[2];
-        backline[z++] = tileline[3];
-        backline[z++] = tileline[4];
-        backline[z++] = tileline[5];
-        backline[z++] = tileline[6];
-        backline[z++] = tileline[7];        
+        Tline=TileData[T0][DY];
+        Bline=bgData[y+DY];
+        Bline[z++] = Tline[0];
+        Bline[z++] = Tline[1];
+        Bline[z++] = Tline[2];
+        Bline[z++] = Tline[3];
+        Bline[z++] = Tline[4];
+        Bline[z++] = Tline[5];
+        Bline[z++] = Tline[6];
+        Bline[z++] = Tline[7];        
       }
     }
-    if (UDbgTileList[i] || UDbgDataList[tile1]) {
-      dy = 8;
-      while (dy--) { 
+    if (UDbgTileList[i] || UDbgDataList[T1]) {
+      DY = 8;
+      while (DY--) { 
         z = 256+x;
-        tileline = TileData[tile1][dy];
-        backline = bgData[y+dy];
-        backline[z++] = tileline[0];
-        backline[z++] = tileline[1];
-        backline[z++] = tileline[2];
-        backline[z++] = tileline[3];
-        backline[z++] = tileline[4];
-        backline[z++] = tileline[5];
-        backline[z++] = tileline[6];
-        backline[z++] = tileline[7];        
+        Tline = TileData[T1][DY];
+        Bline = bgData[y+DY];
+        Bline[z++] = Tline[0];
+        Bline[z++] = Tline[1];
+        Bline[z++] = Tline[2];
+        Bline[z++] = Tline[3];
+        Bline[z++] = Tline[4];
+        Bline[z++] = Tline[5];
+        Bline[z++] = Tline[6];
+        Bline[z++] = Tline[7];        
       }
     }
     UDbgTileList[i] = false;
@@ -119,38 +119,231 @@ function Update_Background() {
   for (i=0;i<384;i++) UDbgDataList[i]=false;
   UDbg = false;
 }
-
-//This needs done
+  
+/////////////////////
 function Framebuffer_to_LCD() {
-
+  var x = 92160; 
+  var y = 0;
+  var i = 23040; 
+  
+  while (i) {
+    y = Colors[FrameBuffer[--i]];
+    ImageData[x-=2] = y[2]; // b
+    ImageData[--x ] = y[1]; // g
+    ImageData[--x ] = y[0]; // r
+    y = Colors[FrameBuffer[--i]];
+    ImageData[x-=2] = y[2]; // b
+    ImageData[--x ] = y[1]; // g
+    ImageData[--x ] = y[0]; // r
+    y = Colors[FrameBuffer[--i]];
+    ImageData[x-=2] = y[2]; // b
+    ImageData[--x ] = y[1]; // g
+    ImageData[--x ] = y[0]; // r
+    y = Colors[FrameBuffer[--i]];
+    ImageData[x-=2] = y[2]; // b
+    ImageData[--x ] = y[1]; // g
+    
+    ImageData[--x ] = y[0]; // r
+  }
+  screenCtx.putImageData(Image, 0,0);
 }
 
-//This needs done
 function Clear_Scanline() {
-
+  var offset = RegLY*160; 
+  var i = 160+offset;
+  while (offset<i) {
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+  }
 }
 
-//This needs done
 function Clear_Framebuffer() {
-
+  var i = 23040; 
+  while (i) {
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+    FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
+  }
 }
 
-//This needs done
 function Draw_Scanline() {
+  var i = 0;
+  var j = 0;
+  var k = 0;
+  var x = 0;
+  var y = 0;
+  var offset = RegLY*160; 
+  var line;
 
+  if (RegLY==0) {
+    CurrentWinLine=0;
+    if (UDtiles) Update_Tile_Data();
+    if (UDbg) Update_Background();
+  }
+  
+  // Draw BGround
+  if (RegLCDC_BgAndWinDisplay) {
+    // copy background line
+    y = RegLCDC_BackgroundYOffs+((RegSCY+RegLY)%256);
+    x = 160+offset;
+    i = 160;
+    line = bgData[y];
+    // copy BGround line to framebuffer
+    while (x>offset) { 
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+      FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+    }
+
+    // Draw Window - TODO this could be buggy
+    if (RegLCDC_WindowDisplay) if ((RegWY<=RegLY) && (RegWX<167)) {
+      y = RegLCDC_WindowYOffs+CurrentWinLine;
+      i = RegWX-7+offset;
+      j = (i<0)?-i:0;
+      line = bgData[y];
+      // copy window line to framebuffer
+      for (x=j; x<167-gbRegWX; x++) {
+        FrameBuffer[x+i] = BgPal[line[RegLCDC_BackgroundXOffs+x]];
+      }
+      CurrentWinLine++;
+    }
+  }  
+  
+  // Draw Sprites
+  if (RegLCDC_SpriteDisplay) {
+    var addr  = _OAM_;
+    var tile  = 0; 
+    var flags = 0; 
+    var count = 0; // max 10 sprites 
+    var pixel = 0;
+    var flip  = 0;
+    var hide  = 0; // sprite priority 
+    var pal;
+    j=40;
+    while (j--) { 
+      y=Memory[addr++]-16;
+      // check Y pos
+      if ((RegLY>=y) && (RegLY<(y+RegLCDC_SpriteSize))) {
+        // TODO handle Y flipped sprites with size = 16
+        x=Memory[addr++]-8;
+        // check X pos
+        if ((x>-8) && (x<160)) {
+          count++;
+          tile  = Memory[addr++];
+          flags = Memory[addr++];
+          hide  = (flags>>7)&1;
+          flip  = (flags>>5)&3;
+          pal   = SprtPal[(flags>>4)&1];
+          if (RegLCDC_SpriteSize==16) {
+            tile&=0xFE;
+            if (RegLY>=(y+8)) { // if it's the 2nd half of the sprite
+              y+=8;
+              if (flip<2) tile++; // not flip Y
+            }
+            else if (flip>1) tile++; // flips Y
+          }  
+          i=8;
+          k=x+offset;
+          switch (flip) {
+          case 0: // no flip
+            line=TileData[tile][RegLY-y]; // sprite line            
+            while (i--) {
+              if (pixel=line[i]) { // if not transparent
+                if ((x+i)<0) break;
+                if (!(hide && FrameBuffer[k+i]))
+                  FrameBuffer[k+i]=pal[pixel];
+              }  
+            } 
+            break;
+          case 1: // flip X
+            line=TileData[tile][RegLY-y]; // sprite line            
+            while (i--) {
+              if (pixel=line[7-i]) {
+                if ((x+i)<0) break;
+                if (!(hide && FrameBuffer[k+i]))
+                  FrameBuffer[k+i]=pal[pixel];
+              }  
+            } 
+            break;
+          case 2: // flip Y
+            line=TileData[tile][7-(RegLY-y)]; // sprite line            
+            while (i--) {
+              if (pixel=line[i]) {
+                if ((x+i)<0) break;
+                if (!(hide && FrameBuffer[k+i]))
+                  FrameBuffer[k+i]=pal[pixel];
+              }  
+            } 
+            break;
+          case 3: // flip XY
+            line=TileData[tile][7-(RegLY-y)]; // sprite line            
+            while (i--) {
+              if (pixel=line[7-i]) {
+                if ((x+i)<0) break;
+                if (!(hide && FrameBuffer[k+i]))
+                  FrameBuffer[k+i]=pal[pixel];
+              }  
+            } 
+            break;
+          }
+        } else addr+=2; // x fail
+      } else addr+=3; // y fail
+      if (count>=10) break;
+    }
+  }
 }
 
-//This needs done
 function Init_LCD() {
+  ScanlineCycles = 0;
+  // init LCD Screen variables
+  screenObj=$('LCD');
+  screenCtx=LCDObj.getContext('2d');
+  screenCtx.width=160;
+  screenCtx.height=144;
+  screenCtx.fillStyle='rgb('+Colors[0][0]+','+Colors[0][1]+','+Colors[0][2]+')';
+  screenCtx.fillRect(0,0,160,144);
+  // get LCD scanline canvas data
+  Image = screenCtx.getImageData(0,0,160,144);
+  ImageData = Image.data;
+  // update tiles info
+  UDtiles = false;
+  for (var i=0; i<384; i++) {
+    UDbgTilesList[i]=false;   
+    UDbgDataList[i]=false;
+  }  
+  // update bg info
+    UDbg  = false;
+  for (var i=0; i<2048; i++) {
+   UDbgTileList[i] = false;
+  }
+  // create Background lines
+  for (var j=0; j<512; j++) {
+    bgData[j] = [];
+    for (var i=0; i<512; i++) bgData[j][i] = 0;
+  }  
+  // create Tiles
+  for (var i=0; i<384; i++) {
+    TileData[i] = []; 
+    // create Tile lines
+    for (var j=0; j<8; j++) {
+      TileData[i][j] = [];
+      for (var k=0; k<8; k++) TileData[i][j][k] = 0;
+    }
+  }
+  // fill frame buffer
+  Clear_Framebuffer();
 
-}
 
-//When other functions are completed, this should be deleted, or moved to debudCPU.js   
-function Canvas() {
-
-var Output = "CPU regs, SP, and PC values";
-var Output2 = "will be shown to the left if";
-var Output3 = "start(A key) is pressed";
+/*
+=======
 var Output4 = "Opcodes will be shown on";
 var Output5 = "the right when select(S key)";
 var Output6 = "is pressed";
@@ -171,6 +364,8 @@ ctx.fillText(Output7,20,100);
 ctx.fillText(Output8,20,110);
 ctx.fillText(Output9,50,120);
 
+>>>>>>> FETCH_HEAD
+*/
 
 }
 

@@ -36,10 +36,13 @@ var _IF_   = 0xFF0F;
 var _LCDC_ = 0xFF40;
 var _STAT_ = 0xFF41;
 var _SCY_  = 0xFF42;
+
 var _SCX_  = 0xFF43;
+
 var _LY_   = 0xFF44;
 var _LYC_  = 0xFF45;
 var _DMA_  = 0xFF46;
+
 var _BGP_  = 0xFF47;
 var _OBP0_ = 0xFF48;
 var _OBP1_ = 0xFF49;

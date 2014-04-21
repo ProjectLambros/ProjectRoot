@@ -34,17 +34,19 @@ function GBPause() {
     if (gbIME) Interrupts[RegIE & RegIF]();
     TIMER_Control();
     if (IsBreakpoint) if (BreakpointsList.indexOf(PC)>=0) {
-      Pause();
+      GBPause();
     }  
   }
 }*/
 
 function Insert_Cartridge(fileName, Start) {
 
-  GBPause();
+    if (!gbPause) return;
+  gbPause=false;
+//  GBPause();
   Seconds = 0;
   Frames  = 0;
-  GBPause();
+//  GBPause();
   Seconds = 0;
   Frames  = 0;
   Init_Memory();
@@ -52,21 +54,13 @@ function Insert_Cartridge(fileName, Start) {
   Init_Interrupts();
   Init_CPU();
   Init_Input()
-  Canvas();
+//  Canvas();
 //RunTest();
   ROM_Load('roms/'+fileName);
 
-var spans = document.getElementsByTagName("span");
 $('I').style.color ='green';
 $('O').style.color ='';
-/*for(var i = spans.length - 1; i >= 0; i--) {
-    if(spans[i].style.color == "green") {
-        var span = spans[i];
-        span.style.color ='red';
-    }*/
 
-    if (!gbPause) return;
-  gbPause=false;
   //FpsInterval=setInterval(Show_Fps,1000);
 //  RunInterval=setInterval(Frame,16);
 }

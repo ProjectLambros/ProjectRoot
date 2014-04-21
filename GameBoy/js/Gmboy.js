@@ -27,7 +27,7 @@ function GBPause() {
   //clearInterval(FpsInterval);
 }
 
-function Frame() {
+/*function Frame() {
   EndFrame=false;
   while (!(EndFrame||gbPause)) {
     if (!gbHalt) OP[MEMR(PC++)](); else CPUTicks=4;
@@ -37,23 +37,36 @@ function Frame() {
       Pause();
     }  
   }
-}
+}*/
 
 function Insert_Cartridge(fileName, Start) {
+
   GBPause();
   Seconds = 0;
   Frames  = 0;
   GBPause();
   Seconds = 0;
   Frames  = 0;
-  Init_CPU();
   Init_Memory();
   Init_LCD();
   Init_Interrupts();
+  Init_CPU();
   Init_Input()
   Canvas();
 //RunTest();
   ROM_Load('roms/'+fileName);
+
+var spans = document.getElementsByTagName("span");
+$('I').style.color ='green';
+$('O').style.color ='';
+/*for(var i = spans.length - 1; i >= 0; i--) {
+    if(spans[i].style.color == "green") {
+        var span = spans[i];
+        span.style.color ='red';
+    }*/
+
+    if (!gbPause) return;
+  gbPause=false;
   //FpsInterval=setInterval(Show_Fps,1000);
-  RunInterval=setInterval(Frame,16);
+//  RunInterval=setInterval(Frame,16);
 }

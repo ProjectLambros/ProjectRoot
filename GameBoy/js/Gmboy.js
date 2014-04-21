@@ -43,6 +43,9 @@ function Insert_Cartridge(fileName, Start) {
 
     if (!gbPause) return;
   gbPause=false;
+
+  RunTest();
+
 //  GBPause();
   Seconds = 0;
   Frames  = 0;
@@ -54,8 +57,6 @@ function Insert_Cartridge(fileName, Start) {
   Init_Interrupts();
   Init_CPU();
   Init_Input()
-//  Canvas();
-//RunTest();
   ROM_Load('roms/'+fileName);
 
 $('I').style.color ='green';

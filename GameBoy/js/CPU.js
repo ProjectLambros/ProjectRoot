@@ -197,8 +197,8 @@ function CPU_RRC(n) {
   n=(n>>1)|(CF<<7);
   SF=0;
   HF=0;
-  FZ=true;
-  if(n==0)FZ=false;
+  ZF=true;
+  if(n==0)ZF=false;
   CPUTicks=8;
   return n;
 }

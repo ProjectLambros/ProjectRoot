@@ -27,19 +27,28 @@ function GBPause() {
   //clearInterval(FpsInterval);
 }
 
+function Frame() {
+  EndFrame=false;
+  while (!(EndFrame||gbPause)) {
+    if (!gbHalt) OP[MEMR(PC++)](); else CPUTicks=4;
+    if (gbIME) Interrupts[RegIE & RegIF]();
+    TIMER_Control();
+    if (IsBreakpoint) if (BreakpointsList.indexOf(PC)>=0) {
+      Pause();
+    }  
+  }
+}
 
 function Insert_Cartridge(fileName, Start) {
   GBPause();
   Seconds = 0;
   Frames  = 0;
-//  Init_LCD();
-//  Init_CPU();
-//  Init_Input();
   GBPause();
-  gbSeconds = 0;
-  gbFrames  = 0;
+  Seconds = 0;
+  Frames  = 0;
   Init_CPU();
   Init_Memory();
+  Init_LCD();
   Init_Interrupts();
   Init_Input()
   Canvas();

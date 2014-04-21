@@ -120,7 +120,7 @@ function Update_Background() {
   UDbg = false;
 }
 
-
+//This needs done
 function Framebuffer_to_LCD() {
 
 var x = 92160; 
@@ -133,7 +133,7 @@ var x = 92160;
      ImageData[--x ] = y[1]; // g
      ImageData[--x ] = y[0]; // r
      y = Colors[FrameBuffer[--i]];
-     ImageData[x-=2] = y[2]; // b
+][=     ImageData[x-=2] = y[2]; // b
      ImageData[--x ] = y[1]; // g
      ImageData[--x ] = y[0]; // r
      y = Colors[FrameBuffer[--i]];
@@ -151,7 +151,7 @@ var x = 92160;
 
 
 
-
+//This needs done
 function Clear_Scanline() {
   var offset = RegLY*160; 
    var i = 160+offset;
@@ -163,7 +163,7 @@ function Clear_Scanline() {
    }
 }
 
-
+//This needs done
 function Clear_Framebuffer() {
 
 
@@ -176,7 +176,9 @@ function Clear_Framebuffer() {
    }
   }
 
+}
 
+//This needs done
 function Draw_Scanline() {
 
   var i = 0;
@@ -203,13 +205,13 @@ function Draw_Scanline() {
      // copy BGround line to framebuffer
      while (x>offset) { 
        FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
-       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
+       FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+gbRegSCX)%256)]];
      }
  
      // Draw Window - TODO this could be buggy
@@ -219,7 +221,7 @@ function Draw_Scanline() {
        j = (i<0)?-i:0;
        line = bgData[y];
        // copy window line to framebuffer
-       for (x=j; x<167-RegWX; x++) {
+       for (x=j; x<167-gbRegWX; x++) {
          FrameBuffer[x+i] = BgPal[line[RegLCDC_BackgroundXOffs+x]];
        }
        CurrentWinLine++;
@@ -309,47 +311,10 @@ function Draw_Scanline() {
    }
   }
 
+}
 
+//This needs done
 function Init_LCD() {
-
-  ScanlineCycles = 0;
-   // init LCD Screen variables
-   screenObj=$('screen');
-   screenCtx=screenObj.getContext('2d');
-   screenCtx.width=160;
-   screenCtx.height=144;
-   screenCtx.fillStyle='rgb('+Colors[0][0]+','+Colors[0][1]+','+Colors[0][2]+')';
-   screenCtx.fillRect(0,0,160,144);
-   // get LCD scanline canvas data
-   Image = screenCtx.getImageData(0,0,160,144);
-   ImageData = Image.data;
-   // update tiles info
-   UDtiles = false;
-   for (var i=0; i<384; i++) {
-     UDbgTileList[i]=false;   
-     UDbgDataList[i]=false;
-   }  
-   // update bg info
-     UDbg  = false;
-   for (var i=0; i<2048; i++) {
-    UDbgTileList[i] = false;
-   }
-   // create Background lines
-   for (var j=0; j<512; j++) {
-     bgData[j] = [];
-     for (var i=0; i<512; i++) bgData[j][i] = 0;
-   }  
-   // create Tiles
-   for (var i=0; i<384; i++) {
-     TileData[i] = []; 
-     // create Tile lines
-     for (var j=0; j<8; j++) {
-       TileData[i][j] = [];
-       for (var k=0; k<8; k++) TileData[i][j][k] = 0;
-     }
-   }
-   // fill frame buffer
-   Clear_Framebuffer();
 
 }
 

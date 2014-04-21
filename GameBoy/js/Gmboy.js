@@ -43,13 +43,9 @@ function Insert_Cartridge(fileName, Start) {
 
     if (!gbPause) return;
   gbPause=false;
-
-  RunTest();
-
-//  GBPause();
+  GBPause();
   Seconds = 0;
   Frames  = 0;
-//  GBPause();
   Seconds = 0;
   Frames  = 0;
   Init_Memory();

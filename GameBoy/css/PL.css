@@ -34,8 +34,8 @@ left: 3.5px;
 #screen{
     border: 1px solid green;
     position:relative;
-    top: -488px;
-    left: 10px;
+    top: -492px;
+    left: 6px;
     z-index: 100;
     margin:3px; 
     padding:2px; 

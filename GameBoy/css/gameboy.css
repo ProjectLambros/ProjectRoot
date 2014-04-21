@@ -177,8 +177,8 @@
 }
 #gameboy-screen {
     z-index: 1;
-    width:170px;
-    height:153px;
+    width:160px;
+    height:144px;
     margin:6px 0 0 54px;
     padding:8px 0 0 8px;
     background-color:#C4CFA1;

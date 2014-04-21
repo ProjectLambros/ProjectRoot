@@ -41,9 +41,10 @@ function GBPause() {
 
 function Insert_Cartridge(fileName, Start) {
 
+
+  GBPause();
     if (!gbPause) return;
   gbPause=false;
-  GBPause();
   Seconds = 0;
   Frames  = 0;
   Seconds = 0;

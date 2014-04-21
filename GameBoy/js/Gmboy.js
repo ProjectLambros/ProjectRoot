@@ -23,8 +23,9 @@ var RunInterval;
 function GBPause() {
   if (gbPause) return;
   gbPause=true;
-  clearInterval(RunInterval);
+  //clearInterval(RunInterval);
   //clearInterval(FpsInterval);
+alert("Paused");
 }
 
 /*function Frame() {
@@ -41,9 +42,8 @@ function GBPause() {
 
 function Insert_Cartridge(fileName, Start) {
 
-
   GBPause();
-    if (!gbPause) return;
+  if (!gbPause) return;
   gbPause=false;
   Seconds = 0;
   Frames  = 0;

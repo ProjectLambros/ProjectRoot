@@ -35,8 +35,8 @@ if (e.keyCode == 65) {
     Pin15&=0xF7; 
     MEMW(_IF_,RegIF|16);
     e.preventDefault();
-    $('DEBUGGER').innerHTML=CPUdebugReg;
-    testCPU();
+//    $('DEBUGGER').innerHTML=CPUdebugReg;
+//    testCPU();
 }
 
  // select
@@ -44,8 +44,8 @@ if (e.keyCode == 83) {
     Pin15&=0xFB;
     MEMW(_IF_,RegIF|16);
     e.preventDefault(); 
-    $('OPCODES').innerHTML=CPUdebugOP;
-    TestOPS();
+//    $('OPCODES').innerHTML=CPUdebugOP;
+//    TestOPS();
 }
 
 // a
@@ -99,8 +99,8 @@ if (e.keyCode == 65) {
     Pin15|=8;
     MEMW(_IF_,RegIF|16);
     e.preventDefault();
-    $('DEBUGGER').innerHTML=CPUdebugReg;
-    testCPU();
+//    $('DEBUGGER').innerHTML=CPUdebugReg;
+//    testCPU();
 }
 
      // select
@@ -108,8 +108,8 @@ if (e.keyCode == 83) {
     Pin15&=4;
     MEMW(_IF_,RegIF|16);
     e.preventDefault(); 
-    $('OPCODES').innerHTML=CPUdebugOP;
-    TestOPS();
+//    $('OPCODES').innerHTML=CPUdebugOP;
+//    TestOPS();
 }
 
 // a

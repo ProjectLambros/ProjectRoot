@@ -62,7 +62,7 @@ function Update_Tile_Data() {
 			}
 		// marking these tiles for update in Update_Background()
 		UDbgDataList[i] = UDbg = true;
-		UDdgTilesList[i] = false;
+		UDtilesList[i] = false;
 	}
 	UDtiles = false;
 }

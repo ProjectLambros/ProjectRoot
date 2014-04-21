@@ -39,6 +39,21 @@ var BgPal   = []; // BGP pallete - should be initialized in MMU.js
 var SprtPal = [[],[]]; // Sprite palettes OBP0 and OBP1 - for sprites
 var Colors    = [[0xEF,0xFF,0xDE],[0xAD,0xD7,0x94],
                    [0x52,0x92,0x73],[0x18,0x34,0x42]];
+// Get element from id
+function $(id){return document.getElementById(id);}
+var br='<br/'+'>\n';
+
+// Insert a space every "l" chars.
+// for example: sp('12345678',4) returns '1234 5678'
+function sp(s,l){
+  var r=[],i=0;
+  while (s.length>l) {
+    r[i++]=s.substr(0,l);
+    s=s.substr(l);
+  }
+  if (s.length>0) r[i]=s;
+  return r.join('&nbsp;');
+}
 
 
 function Update_Tile_Data() {

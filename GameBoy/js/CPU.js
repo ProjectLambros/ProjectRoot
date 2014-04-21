@@ -1096,8 +1096,8 @@ for (var i=0;i<8;i++) {
 /*
 Decimal Adjust register A. This instruction adjusts register A so that the
 correct representation of Binary Coded Decimal (BCD) is obtained.
-*/
-var DAAtable= [ //DAA Table, tried to refactor. Table doesn't seem to count by any identifiable amount, so a simple FOR won't fix.
+*///DAA Table, tried to refactor. Table doesn't seem to count by any identifiable amount, so a simple FOR won't fix.
+var DAAtable= [ //DAA table courtesy of Visual Boy Advance
   0x0080,0x0100,0x0200,0x0300,0x0400,0x0500,0x0600,0x0700,
   0x0800,0x0900,0x1020,0x1120,0x1220,0x1320,0x1420,0x1520,
   0x1000,0x1100,0x1200,0x1300,0x1400,0x1500,0x1600,0x1700,

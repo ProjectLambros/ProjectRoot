@@ -606,7 +606,7 @@ OP[0xCE]=new Function('T1=MEMR(PC++);'+CPU_ADC_A('T1',4)); // ADC A,u8;
 OP[0xCF]=new Function(CPU_RST('0x08')); // RST 0x08
 OP[0xD0]=new Function(CPU_RET('!CF')); // RET NC
 OP[0xD1]=function(){ rE=MEMR(SP++); rD=MEMR(SP++); CPUTicks=12; }; // POP DE
-OP[0xD2]=new Function(CPU_JP('!FC')); // JP NC,u16
+OP[0xD2]=new Function(CPU_JP('!CF')); // JP NC,u16
 OP[0xD3]=CPU_UNK;
 OP[0xD4]=new Function(CPU_CALL('!CF')); // CALL NC,u16
 OP[0xD5]=function(){ MEMW(--SP,rD); MEMW(--SP,rE); CPUTicks=16; }; // PUSH DE
@@ -1039,15 +1039,15 @@ MNcb[0x3F]=function(){ return 'SRL A'; };
 for (var i=0;i<8;i++) {
   var o=(1<<6)|(i<<3);
   // BIT n,r - CB 01 xxx xxx - CB 01 bit reg
-  OPcb[o|7]=new Function("ZF=!(RA&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
+  OPcb[o|7]=new Function("ZF=!(rA&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|7]=new Function("return 'BIT "+i+",A';");
-  OPcb[o|0]=new Function("ZF=!(RB&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
+  OPcb[o|0]=new Function("ZF=!(rB&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|0]=new Function("return 'BIT "+i+",B';");
-  OPcb[o|1]=new Function("ZF=!(RC&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
+  OPcb[o|1]=new Function("ZF=!(rC&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|1]=new Function("return 'BIT "+i+",C';");
-  OPcb[o|2]=new Function("ZF=!(RD&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
+  OPcb[o|2]=new Function("ZF=!(rD&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|2]=new Function("return 'BIT "+i+",D';");
-  OPcb[o|3]=new Function("ZF=!(RE&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
+  OPcb[o|3]=new Function("ZF=!(rE&"+(1<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|3]=new Function("return 'BIT "+i+",E';");
   OPcb[o|4]=new Function("ZF=!(HL&"+(256<<i)+");SF=0;HF=1; CPUTicks=8;");
   MNcb[o|4]=new Function("return 'BIT "+i+",H';");

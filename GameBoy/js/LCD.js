@@ -356,7 +356,7 @@ function Init_LCD() {
 }
 
 //When other functions are completed, this should be deleted, or moved to debudCPU.js   
-/*function Canvas() {
+function Canvas() {
 
 var Output = "CPU regs, SP, and PC values";
 var Output2 = "will be shown to the left if";
@@ -383,4 +383,4 @@ ctx.fillText(Output9,50,120);
 
 
 }
-*/
+

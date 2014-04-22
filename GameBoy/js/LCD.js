@@ -300,7 +300,7 @@ function Draw_Scanline() {
 function Init_LCD() {
    ScanlineCycles = 0;
    // init LCD Screen variables
-   screenObj=$('screen');
+   screenObj=$('screen'); //Screen? Why is it this and LCD?
    screenCtx=screenObj.getContext('2d');
    screenCtx.width=160;
    screenCtx.height=144;
@@ -312,7 +312,7 @@ function Init_LCD() {
    // update tiles info
    UDtiles = false;
    for (var i=0; i<384; i++) {
-     UDbgTileList[i]=false;   
+     UDTileList[i]=false;   
      UDbgDataList[i]=false;
    }  
    // update bg info

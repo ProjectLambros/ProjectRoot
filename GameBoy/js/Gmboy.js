@@ -42,7 +42,8 @@ alert("Paused");
 
 function Insert_Cartridge(fileName, Start) {
 
-  GBPause();
+  //GBPause(); I see what you were trying to do 
+  // combining run and insert so its one function
   if (!gbPause) return;
   gbPause=false;
   Seconds = 0;

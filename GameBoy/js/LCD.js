@@ -14,8 +14,6 @@
  *   The full license is available at http://www.gnu.org/licenses/gpl.html *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-
 var TileData = []; // tile data arrays
 var bgData = []; // background data
 var screenObj; // screen Object
@@ -122,10 +120,8 @@ function Update_Background() {
   UDbg = false;
 }
 
-
 function Framebuffer_to_LCD() {
-
-var x = 92160; 
+   var x = 92160; 
    var y = 0;
    var i = 23040; 
    
@@ -145,17 +141,13 @@ var x = 92160;
      y = Colors[FrameBuffer[--i]];
      ImageData[x-=2] = y[2]; // b
      ImageData[--x ] = y[1]; // g
-     
      ImageData[--x ] = y[0]; // r
    }
    screenCtx.putImageData(Image, 0,0);
-  }
-
-
-
+ }
 
 function Clear_Scanline() {
-  var offset = RegLY*160; 
+   var offset = RegLY*160; 
    var i = 160+offset;
    while (offset<i) {
      FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
@@ -165,23 +157,18 @@ function Clear_Scanline() {
    }
 }
 
-
 function Clear_Framebuffer() {
-
-
-  var i = 23040; 
+   var i = 23040; 
    while (i) {
      FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
      FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
      FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
      FrameBuffer[--i] = 0; FrameBuffer[--i] = 0;
    }
-  }
-
+}
 
 function Draw_Scanline() {
-
-  var i = 0;
+   var i = 0;
    var j = 0;
    var k = 0;
    var x = 0;
@@ -213,7 +200,6 @@ function Draw_Scanline() {
        FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
        FrameBuffer[--x] = BgPal[line[RegLCDC_BackgroundXOffs+((--i+RegSCX)%256)]];
      }
- 
      // Draw Window - TODO this could be buggy
      if (RegLCDC_WindowDisplay) if ((RegWY<=RegLY) && (RegWX<167)) {
        y = RegLCDC_WindowYOffs+CurrentWinLine;
@@ -226,7 +212,7 @@ function Draw_Scanline() {
        }
        CurrentWinLine++;
      }
-   }  
+}  
    
    // Draw Sprites
    if (RegLCDC_SpriteDisplay) {
@@ -311,10 +297,8 @@ function Draw_Scanline() {
    }
   }
 
-
 function Init_LCD() {
-
-  ScanlineCycles = 0;
+   ScanlineCycles = 0;
    // init LCD Screen variables
    screenObj=$('screen');
    screenCtx=screenObj.getContext('2d');
@@ -352,12 +336,10 @@ function Init_LCD() {
    }
    // fill frame buffer
    Clear_Framebuffer();
-
 }
 
 //When other functions are completed, this should be deleted, or moved to debudCPU.js   
 function Canvas() {
-
 var Output = "CPU regs, SP, and PC values";
 var Output2 = "will be shown to the left if";
 var Output3 = "start(A key) is pressed";
@@ -367,7 +349,6 @@ var Output6 = "is pressed";
 var Output7 = "Hold down S to watch our";
 var Output8 = "register values change as";
 var Output9 = "the CPU runs";
-
 var c=document.getElementById("screen");
 var ctx=c.getContext("2d");
 ctx.font="10px Arial";

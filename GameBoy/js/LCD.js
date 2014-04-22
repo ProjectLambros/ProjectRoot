@@ -311,8 +311,8 @@ function Init_LCD() {
    ImageData = Image.data;
    // update tiles info
    UDtiles = false;
-   for (var i=0; i<384; i++) {
-     UDTileList[i]=false;   
+   for (var i=0; i<384; i++) { //The variables in this for loop are perfect
+     UDbgTileList[i]=false;   
      UDbgDataList[i]=false;
    }  
    // update bg info

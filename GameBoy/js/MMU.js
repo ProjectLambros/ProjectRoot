@@ -61,9 +61,10 @@ var _ECHO_ = 0xE000; // echo of internal RAM
 var _OAM_  = 0xFE00; // object attribute
 
 
-function MEMR(a) { // MemoryReadRomOnly
-  return Memory[a];
+function MemoryReadRomOnly(a) {
+  return gbMemory[a];
 }
+
 
 
 function MemoryReadMBC1ROM(a) {
@@ -79,6 +80,8 @@ function MemoryReadMBC1ROM(a) {
      default: return Memory[a];
    }  
  }
+
+var MEMR = MemoryReadRomOnly;
 
 function Init_Memory() {
   var i=0x100000;

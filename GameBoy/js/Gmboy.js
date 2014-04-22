@@ -44,8 +44,6 @@ function Insert_Cartridge(fileName, Start) {
 
   GBPause(); //I see what you were trying to do 
   // combining run and insert so its one function
-  if (!gbPause) return;
-  gbPause=false;
   Seconds = 0;
   Frames  = 0;
   Init_Memory();
@@ -54,6 +52,8 @@ function Insert_Cartridge(fileName, Start) {
   Init_CPU();
   Init_Input()
   ROM_Load('roms/'+fileName);
+  if (!gbPause) return;
+  gbPause=false;
 
 $('I').style.color ='green';
 $('O').style.color ='';

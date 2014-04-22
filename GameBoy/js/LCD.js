@@ -312,7 +312,7 @@ function Init_LCD() {
    // update tiles info
    UDtiles = false;
    for (var i=0; i<384; i++) { //The variables in this for loop are perfect
-     UDTileList[i]=false;   
+     UDtilesList[i]=false;   
      UDbgDataList[i]=false;
    }  
    // update bg info

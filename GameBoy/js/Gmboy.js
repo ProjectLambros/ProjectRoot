@@ -54,6 +54,7 @@ function Insert_Cartridge(fileName, Start) {
   ROM_Load('roms/'+fileName);
   if (!gbPause) return;
   gbPause=false;
+  alert("laksdjgl");
 
 $('I').style.color ='green';
 $('O').style.color ='';

@@ -74,4 +74,5 @@ function Init_Interrupts() {
     if (i&16)Interrupts[i] = Int_Buttons; else
     Interrupts[i] = function(){};   
   }
+  //alert("Interupts");
 }

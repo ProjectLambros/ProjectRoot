@@ -164,4 +164,5 @@ function Init_Input() {
   document.onkeyup = OnKeyUp;
   Pin14=0xEF;
   Pin15=0xDF;
+  //alert("Inputs");
 }

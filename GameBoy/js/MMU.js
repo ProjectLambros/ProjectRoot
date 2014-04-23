@@ -155,6 +155,7 @@ function Init_Memory() {
   MEMW(0xFF4A,0x00); // WY
   MEMW(0xFF4B,0x00); // WX
   MEMW(0xFFFF,0x00); // IE
+  //alert("MMU");
 }
 
 function MEMW(a,v) {

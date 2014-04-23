@@ -336,6 +336,7 @@ function Init_LCD() {
    }
    // fill frame buffer
    Clear_Framebuffer();
+   //alert("all LCD");
 }
 
 //When other functions are completed, this should be deleted, or moved to debudCPU.js   

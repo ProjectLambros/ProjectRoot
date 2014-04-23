@@ -60,6 +60,7 @@ function ROM_Load(fileName) {
   req.overrideMimeType('text/plain; charset=x-user-defined'); //forces the rom to be in plain text form 
   req.send(null); // since we are useing false in our open command
   if (req.readyState==4) { //this means that the response from the server ie. that rom folder is ready and request is finished
+	//alert("file loaded");
     var s=req.responseText; // this loads the text into a variable 
     i=s.length;
     while (i--) ROM[i]=s.charCodeAt(i)&0xff; //gives the least significant 8 bits of the data

@@ -74,6 +74,7 @@ function Init_CPU() {
 	SP=0xFFFE;
 	HL=0x014D;
 	CPUTicks=0;
+	//alert("all CPU");
 }
 
 

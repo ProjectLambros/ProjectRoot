@@ -19,7 +19,7 @@ var bgData = []; // background data
 var screenObj; // screen Object
 var screenCtx; // screen Context
 var FrameBuffer = [];
-var Image; //  canvas image
+var LCDImage; //  canvas image
 var ImageData; //  canvas image data
 //var Scanline; //  canvas scanline 
 //var ScanlineData = []; // Scanline data in GB memory
@@ -143,7 +143,7 @@ function Framebuffer_to_LCD() {
      ImageData[--x ] = y[1]; // g
      ImageData[--x ] = y[0]; // r
    }
-   screenCtx.putImageData(Image, 0,0);
+   screenCtx.putImageData(LCDImage, 0,0);
  }
 
 function Clear_Scanline() {
@@ -307,8 +307,8 @@ function Init_LCD() {
    screenCtx.fillStyle='rgb('+Colors[0][0]+','+Colors[0][1]+','+Colors[0][2]+')';
    screenCtx.fillRect(0,0,160,144);
    // get LCD scanline canvas data
-   Image = screenCtx.getImageData(0,0,160,144);
-   ImageData = Image.data;
+   LCDImage = screenCtx.getImageData(0,0,160,144);
+   ImageData = LCDImage.data;
    // update tiles info
    UDtiles = false;
    for (var i=0; i<384; i++) { //The variables in this for loop are perfect

@@ -90,7 +90,7 @@ var _OAM_  = 0xFE00; // object attribute
 
 
 function MemoryReadRomOnly(a) {
-  return gbMemory[a];
+  return Memory[a];
 }
 
 
@@ -119,6 +119,7 @@ function Init_Memory() {
     Memory[--i] = 0;
     Memory[--i] = 0;
   }
+  
   MEMW(0xFF00,0xFF); // P1
   MEMW(0xFF04,0xAF); // DIV
   MEMW(0xFF05,0x00); // TIMA

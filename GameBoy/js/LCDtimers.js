@@ -14,9 +14,6 @@
  *   The full license is available at http://www.gnu.org/licenses/gpl.html *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-
- 
 var DIVTicks = 0;         // DIV Ticks Count
 var LCDTicks = 0;         // ScanLine Counter
 var TimerTicks = 0;       // Timer Ticks Count
@@ -47,7 +44,7 @@ function Mode2() { // OAM in use
   }  
 }
 
-function Mode3() { // OAM+VRAM busy
+function Mode3() { // OAM+VrAM busy
   if (RegSTAT_Mode!=3) {
     RegSTAT_Mode=3;
     Memory[_STAT_]|=3; // set STAT bits 1-0 to 3
@@ -88,7 +85,6 @@ function TIMER_Control() {
   if (LCDTicks>=456){ // when ScanLineCounter overflows -> new scanline        
     LCDTicks-=456;
     // I'm comparing LY and LYC before incrementing LY
-    // that's because MarioLand and the dot under the coin
     LY_LYC_compare(); 
     if ((++RegLY)>=154) RegLY-=154; // inc LY (current scanline)
     Memory[_LY_]=RegLY;

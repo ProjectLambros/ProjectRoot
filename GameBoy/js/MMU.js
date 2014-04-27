@@ -14,18 +14,9 @@
  *   The full license is available at http://www.gnu.org/licenses/gpl.html *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-
-
 var Memory = new Array(0x10000);
 
 // special register mirror values and bit states
-
-//var RegLY = RegLYC = RegSCY = RegSCX = RegWY = RegWX = RegDIV = RegIF = RegIE = RegSTAT_Mode = 0;
-//var RegSTAT_IntLYLYC = RegSTAT_IntMode2 = RegSTAT_IntMode1 = RegSTAT_IntMode0 = false;
-//var RegLCDC_DisplayOn = RegLCDC_WindowDisplay = RegLCDC_SpriteDisplay = RegLCDC_SpriteSize = RegLCDC_BgAndWinDisplay = RegTAC_TimerOn = false;
-//var RegLCDC_WindowYOffs = RegLCDC_BackgroundYOffs = RegLCDC_BackgroundXOffs = 0;
-
 var RegLY = 0;
 var RegLYC = 0;
 var RegSCY = 0;
@@ -50,8 +41,6 @@ var RegLCDC_BackgroundYOffs = 0;
 var RegLCDC_BackgroundXOffs = 0;
 var RegLCDC_BgAndWinDisplay = false;
 var RegTAC_TimerOn = false;
-
-
 
 // special register addresses
 var _P1_   = 0xFF00;
@@ -78,92 +67,41 @@ var _IE_   = 0xFFFF;
 // start addresses
 var _ROM0_ = 0x0000;
 var _ROM1_ = 0x4000; 
-var _VRAM_ = 0x8000; // video RAM
+var _VrAM_ = 0x8000; // video rAM
 var _BTD0_ = 0x8000; // backgroun tile data 0
 var _BTD1_ = 0x8800; // backgroun tile data 1
 var _BTM0_ = 0x9800; // background tile map 0
 var _BTM1_ = 0x9C00; // background tile map 1
-var _RAM1_ = 0xA000; // switchable RAM
-var _RAM0_ = 0xC000; // internal RAM
-var _ECHO_ = 0xE000; // echo of internal RAM
+var _rAM1_ = 0xA000; // switchable rAM
+var _rAM0_ = 0xC000; // internal rAM
+var _ECHO_ = 0xE000; // echo of internal rAM
 var _OAM_  = 0xFE00; // object attribute
 
-
-function MemoryReadRomOnly(a) {
+function Memory_Read_ROM_Only(a) {
   return Memory[a];
 }
 
-
-
-function MemoryReadMBC1ROM(a) {
-   switch (a>>12) {
-     case 0:
-     case 1:
-     case 2:
-     case 3: return Memory[a];
-     case 4: 
-     case 5: 
-     case 6: 
-     case 7: return ROM[ROMBank1offs+a];
-     default: return Memory[a];
-   }  
- }
-
-var MEMR = MemoryReadRomOnly;
-
-function Init_Memory() {
-  var i=0x100000;
-  while (i) {
-    Memory[--i] = 0;
-    Memory[--i] = 0;
-    Memory[--i] = 0;
-    Memory[--i] = 0;
-  }
-  
-  MEMW(0xFF00,0xFF); // P1
-  MEMW(0xFF04,0xAF); // DIV
-  MEMW(0xFF05,0x00); // TIMA
-  MEMW(0xFF06,0x00); // TMA
-  MEMW(0xFF07,0xF8); // TAC
-  MEMW(0xFF0F,0x00); // IF 
-  MEMW(0xFF10,0x80); // NR10
-  MEMW(0xFF11,0xBF); // NR11
-  MEMW(0xFF12,0xF3); // NR12
-  MEMW(0xFF14,0xBF); // NR14
-  MEMW(0xFF16,0x3F); // NR21
-  MEMW(0xFF17,0x00); // NR22
-  MEMW(0xFF19,0xBF); // NR24
-  MEMW(0xFF1A,0x7F); // NR30
-  MEMW(0xFF1B,0xFF); // NR31
-  MEMW(0xFF1C,0x9F); // NR32
-  MEMW(0xFF1E,0xBF); // NR33
-  MEMW(0xFF20,0xFF); // NR41
-  MEMW(0xFF21,0x00); // NR42
-  MEMW(0xFF22,0x00); // NR43
-  MEMW(0xFF23,0xBF); // NR30
-  MEMW(0xFF24,0x77); // NR50
-  MEMW(0xFF25,0xF3); // NR51
-  MEMW(0xFF26,0xF1); // NR52 0xF1->GB; 0xF0->SGB
-  MEMW(0xFF40,0x91); // LCDC
-  MEMW(0xFF42,0x00); // SCY
-  MEMW(0xFF43,0x00); // SCX
-  MEMW(0xFF44,0x00); // LY
-  MEMW(0xFF45,0x00); // LYC
-  MEMW(0xFF47,0xFC); // BGP
-  MEMW(0xFF48,0xFF); // OBP0
-  MEMW(0xFF49,0xFF); // OBP1
-  MEMW(0xFF4A,0x00); // WY
-  MEMW(0xFF4B,0x00); // WX
-  MEMW(0xFFFF,0x00); // IE
-  //alert("MMU");
+function Memory_Read_MBC1_ROM(a) {
+  switch (a>>12) {
+    case 0:
+    case 1:
+    case 2:
+    case 3: return Memory[a];
+    case 4: 
+    case 5: 
+    case 6: 
+    case 7: return ROM[ROMBank1offs+a];
+    default: return Memory[a];
+  }  
 }
 
+var MEMR = Memory_Read_ROM_Only;
+
 function MEMW(a,v) {
-  // Special registers+HRAM
+  // Special registers+HrAM
   if (a>=0xFF00) {
     switch(a&0xFF) {
     case 0x00: // FF00 P1 Joypad
-      //if(v==3)Memory[a]=0xF0; else // Fx->GB/GBP; 3x->SGB
       Read_Joypad(v);
       return;    
     case 0x02: // FF02 SC
@@ -217,31 +155,31 @@ function MEMW(a,v) {
     case 0x45: // FF45 LYC
       Memory[0xFF45]=RegLYC=v;
       return;
-    case 0x46: // FF46 DMA TRANSFER  
+    case 0x46: // FF46 DMA TrANSFER  
       v=v<<8; // start address of DMA
       a=0xFE00; // OAM addr
       while (a<0xFEA0) Memory[a++] = MEMR(v++);
       return;
     case 0x47: // FF47 BGP - Background Palette
       Memory[0xFF47]=v;
-      BgPal[0]=v&3;
-      BgPal[1]=(v>>2)&3;
-      BgPal[2]=(v>>4)&3;
-      BgPal[3]=(v>>6)&3;
+      BackPal[0]=v&3;
+      BackPal[1]=(v>>2)&3;
+      BackPal[2]=(v>>4)&3;
+      BackPal[3]=(v>>6)&3;
       return;
     case 0x48: // FF48 OBP0 - Sprite Palette 0
       Memory[0xFF48]=v;
-      SprtPal[0][0]=v&3;
-      SprtPal[0][1]=(v>>2)&3;
-      SprtPal[0][2]=(v>>4)&3;
-      SprtPal[0][3]=(v>>6)&3;
+      SpritePal[0][0]=v&3;
+      SpritePal[0][1]=(v>>2)&3;
+      SpritePal[0][2]=(v>>4)&3;
+      SpritePal[0][3]=(v>>6)&3;
       return;
     case 0x49: // FF49 OBP1 - Sprite Palette 1
       Memory[0xFF49]=v;
-      SprtPal[1][0]=v&3;
-      SprtPal[1][1]=(v>>2)&3;
-      SprtPal[1][2]=(v>>4)&3;
-      SprtPal[1][3]=(v>>6)&3;
+      SpritePal[1][0]=v&3;
+      SpritePal[1][1]=(v>>2)&3;
+      SpritePal[1][2]=(v>>4)&3;
+      SpritePal[1][3]=(v>>6)&3;
       return;            
     case 0x4A: // FF4A WY
       Memory[0xFF4A]=RegWY=v;
@@ -285,7 +223,7 @@ function MEMW(a,v) {
       }
     default:
       alert('Unknown Memory Bank Controller.\naddr: '+hex4(a)+' - val: '+hex2(v));
-      GBPause();
+      Pause();
       return;   
     }
   }
@@ -293,8 +231,8 @@ function MEMW(a,v) {
   else if (Memory[a]!=v) {
     // 8000-97FF: Tile data
     if (a<0x9800) {
-      UDtiles=true;
-      UDtilesList[(a-0x8000)>>4]=true;
+      UDTiles=true;
+      UDTilesList[(a-0x8000)>>4]=true;
       Memory[a]=v;
     }
     // 9800-9FFF: Tile maps
@@ -303,11 +241,11 @@ function MEMW(a,v) {
       UDbgTileList[a-0x9800]=true;
       Memory[a]=v;
     }
-    // A000-BFFF: Switchable RAM
+    // A000-BFFF: Switchable rAM
     else if (a<0xC000) {
       Memory[a]=v;
     }
-    // C000-DFFF: Internal RAM
+    // C000-DFFF: Internal rAM
     else if (a<0xE000) {
       Memory[a]=v;
       // C000-DDFF: Writes to ECHO
@@ -325,15 +263,60 @@ function MEMW(a,v) {
 function where_mem(a) { // TODO rewrite this
   if (a<0x4000) return 'ROM0'; else
   if (a<0x8000) return 'ROM1'; else
-  if (a<0xA000) return 'VRAM'; else
-  if (a<0xC000) return 'RAM1'; else
-  if (a<0xE000) return 'RAM0'; else
+  if (a<0xA000) return 'VrAM'; else
+  if (a<0xC000) return 'rAM1'; else
+  if (a<0xE000) return 'rAM0'; else
   if (a<0xFE00) return 'ECHO'; else
   if (a<0xFEA0) return 'OAM&nbsp;'; else
   if (a<0xFF00) return 'I/O&nbsp;'; else
   if (a<0xFF4C) return 'I/O&nbsp;'; else
   if (a<0xFF80) return 'I/O&nbsp;'; else
-  if (a<0xFFFF) return 'HRAM'; else
+  if (a<0xFFFF) return 'HrAM'; else
   if (a=0xFFFF) return 'IE&nbsp;&nbsp;'; else
   return '&nbsp;&nbsp;&nbsp;&nbsp;';
 }
+
+function Start_Memory() {
+  var i=0x100000;
+  while (i) {
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+    Memory[--i] = 0;
+  }
+  MEMW(0xFF00,0xFF); // P1
+  MEMW(0xFF04,0xAF); // DIV
+  MEMW(0xFF05,0x00); // TIMA
+  MEMW(0xFF06,0x00); // TMA
+  MEMW(0xFF07,0xF8); // TAC
+  MEMW(0xFF0F,0x00); // IF 
+  MEMW(0xFF10,0x80); // NR10
+  MEMW(0xFF11,0xBF); // NR11
+  MEMW(0xFF12,0xF3); // NR12
+  MEMW(0xFF14,0xBF); // NR14
+  MEMW(0xFF16,0x3F); // NR21
+  MEMW(0xFF17,0x00); // NR22
+  MEMW(0xFF19,0xBF); // NR24
+  MEMW(0xFF1A,0x7F); // NR30
+  MEMW(0xFF1B,0xFF); // NR31
+  MEMW(0xFF1C,0x9F); // NR32
+  MEMW(0xFF1E,0xBF); // NR33
+  MEMW(0xFF20,0xFF); // NR41
+  MEMW(0xFF21,0x00); // NR42
+  MEMW(0xFF22,0x00); // NR43
+  MEMW(0xFF23,0xBF); // NR30
+  MEMW(0xFF24,0x77); // NR50
+  MEMW(0xFF25,0xF3); // NR51
+  MEMW(0xFF26,0xF1); // NR52 0xF1->GB; 0xF0->SGB
+  MEMW(0xFF40,0x91); // LCDC
+  MEMW(0xFF42,0x00); // SCY
+  MEMW(0xFF43,0x00); // SCX
+  MEMW(0xFF44,0x00); // LY
+  MEMW(0xFF45,0x00); // LYC
+  MEMW(0xFF47,0xFC); // BGP
+  MEMW(0xFF48,0xFF); // OBP0
+  MEMW(0xFF49,0xFF); // OBP1
+  MEMW(0xFF4A,0x00); // WY
+  MEMW(0xFF4B,0x00); // WX
+  MEMW(0xFFFF,0x00); // IE
+}  

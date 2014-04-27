@@ -187,14 +187,14 @@
 #gameboy-brand i {
     z-index: 1;
     margin-left:3px;
-    font-size:23px;
+    font-size:24px;
     font-weight:normal;
 }
 #gameboy-brand {
     z-index: 1;
-    margin:6px 0 0 24px;
+    margin:6px 0 0 -1px;
     color:#230081;
-    font-size:16px;
+    font-size:20px;
     font-weight:bold;
     font-family:Tahoma;
 }

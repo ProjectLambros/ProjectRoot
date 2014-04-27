@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *   Project Lambros Game Boy rom.js					   *
+ *   Project Lambros Game Boy rom.js					                   *
  *                                                                         *
  *   This program is free software: you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -14,23 +14,23 @@
  *   The full license is available at http://www.gnu.org/licenses/gpl.html *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-
-
-var ROM = []; 
-var CartridgeType = 0; 
+var ROM = [];
+var CartridgeType = 0;
 var BankSwitchCount = 0;
 
 var _ROM_ONLY_ = 0x00;
 var _ROM_MBC1_ = 0x01;
 
 var MBC1Mode = 0;
+
 var ROMBank1offs = 0;
 
+var CartridgeType = 0;
 var CartridgeTypes = [];
 CartridgeTypes[0] = 'ROM only';
 CartridgeTypes[1] = 'ROM+MBC1';
 
-var ROMBanks = []; //one bank = 16 KBytes = 256 Kbits
+var ROMBanks = []; // 1 Bank = 16 KBytes = 256 Kbits
 ROMBanks[0x00] = 2;
 ROMBanks[0x01] = 4;
 ROMBanks[0x02] = 8;
@@ -42,12 +42,12 @@ ROMBanks[0x52] = 72;
 ROMBanks[0x53] = 80;
 ROMBanks[0x54] = 96;
 
-var RAMBanks = [];
-RAMBanks[0] = 0;
-RAMBanks[1] = 1;
-RAMBanks[2] = 2;
-RAMBanks[3] = 4;
-RAMBanks[4] = 16;
+var rAMBanks = [];
+rAMBanks[0] = 0;
+rAMBanks[1] = 1;
+rAMBanks[2] = 2; // ? docs say 1
+rAMBanks[3] = 4;
+rAMBanks[4] = 16;
 
 var ROMInfo = {};
 
@@ -56,23 +56,22 @@ function ROM_Load(fileName) {
   ROM = [];
   var i = 0;
   var req = new XMLHttpRequest();
-  req.open('GET', fileName, false); //grabs the file from our roms folder
-  req.overrideMimeType('text/plain; charset=x-user-defined'); //forces the rom to be in plain text form 
-  req.send(null); // since we are useing false in our open command
-  if (req.readyState==4) { //this means that the response from the server ie. that rom folder is ready and request is finished
-	//alert("file loaded");
-    var s=req.responseText; // this loads the text into a variable 
+  req.open('GET', fileName, false);
+  req.overrideMimeType('text/plain; charset=x-user-defined');
+  req.send(null);
+  if ((req.readyState==4)/*&&(req.status==200)*/) {
+    var s=req.responseText;
     i=s.length;
-    while (i--) ROM[i]=s.charCodeAt(i)&0xff; //gives the least significant 8 bits of the data
+    while (i--) ROM[i]=s.charCodeAt(i)&0xff;
     i=0x8000;
     while (i--) Memory[i]=ROM[i]; // copy 2 banks into memory
   }
   else {
     alert('Error loading ROM: '+fileName);
   }
-  // ROM and RAM banks
+  // ROM and rAM banks
   ROMInfo.ROMBanks = ROMBanks[ROM[0x148]];
-  ROMInfo.RAMBanks = RAMBanks[ROM[0x149]];
+  ROMInfo.rAMBanks = rAMBanks[ROM[0x149]];
   // ROM name
   var s = ROM.slice(0x0134,0x0143);
   ROMInfo.Name = '';
@@ -85,10 +84,10 @@ function ROM_Load(fileName) {
   // Set MEMR function
   switch (ROMInfo.CartridgeType) {
   case _ROM_ONLY_:
-    MEMR = MemoryReadRomOnly;
+    MEMR = Memory_Read_ROM_Only;
     break;
   case _ROM_MBC1_:
-    MEMR = MemoryReadMBC1ROM; 
+    MEMR = Memory_Read_MBC1_ROM; 
     MBC1Mode = 0;
     break;
   }
@@ -96,6 +95,6 @@ function ROM_Load(fileName) {
 }
 
 function ROMBankSwitch(bank) {
-	BankSwitchCount++;
-	ROMBank1offs = (bank==0)?0:(--bank*0x4000); //new ROM Bank 1 address
-}
+  BankSwitchCount++;  
+  ROMBank1offs = (bank==0)?0:(--bank*0x4000); // new ROM Bank 1 address
+  }

@@ -26,144 +26,57 @@ function Read_Joypad(v) {
   }
 }
     
-function OnKeyDown(e) {
+function OnKeyDown_Event(e) {
    
-      // start
-if (e.keyCode == 65) {
-    Pin15&=0xF7; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-//    $('DEBUGGER').innerHTML=CPUdebugReg;
-//    testCPU();
+  switch (e.which) {
+    // down
+    case 40: Pin14&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // up
+    case 38: Pin14&=0xFB; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // left
+    case 37: Pin14&=0xFD; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // right
+    case 39: Pin14&=0xFE; MEMW(_IF_,RegIF|16); e.preventDefault(); return;    
+    // start
+    case 65: Pin15&=0xF7; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // select
+    case 83: Pin15&=0xFB; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // button B
+    case 90: Pin15&=0xFD; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // button A
+    case 88: Pin15&=0xFE; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+  }
 }
 
- // select
-if (e.keyCode == 83) {
-    Pin15&=0xFB;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault(); 
-//    $('OPCODES').innerHTML=CPUdebugOP;
-//    TestOPS();
-}
-
-// a
- if (e.keyCode == 88) {
-    Pin15&=0xFE;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// b
- if (e.keyCode == 90) {
-    Pin15&=0xFD;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// up
- if (e.keyCode == 38) {
-    Pin14&=0xFB;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// down
- if (e.keyCode == 40) {
-    Pin14&=0xF7; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}    
-    
-// left
- if (e.keyCode == 37) {
-    Pin14&=0xFD; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// right
- if (e.keyCode == 39) {
-    Pin14&=0xFE; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-return;
-}
-
-function OnKeyUp(e) {
+function OnKeyUp_Event(e) {
     if (e.keyCode == 27) {
          exitFullscreen();
 	 document.getElementById("screen").style.top="-495px";
        }
+  switch (e.which) {
+    // down
+    case 40: Pin14|=8; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // up
+    case 38: Pin14|=4; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // left
+    case 37: Pin14|=2; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // right
+    case 39: Pin14|=1; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
     // start
-if (e.keyCode == 65) {
-    Pin15|=8;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-//    $('DEBUGGER').innerHTML=CPUdebugReg;
-//    testCPU();
-}
+    case 65: Pin15|=8; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // select
+    case 83: Pin15|=4; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // button B
+    case 90: Pin15|=2; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
+    // button A
+    case 88: Pin15|=1; MEMW(_IF_,RegIF|16); e.preventDefault(); return;
 
-     // select
-if (e.keyCode == 83) {
-    Pin15&=4;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault(); 
-//    $('OPCODES').innerHTML=CPUdebugOP;
-//    TestOPS();
-}
-
-// a
- if (e.keyCode == 88) {
-    Pin15&=1;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// b
- if (e.keyCode == 90) {
-    Pin15&=2;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// up
- if (e.keyCode == 38) {
-    Pin14&=4;
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// down
- if (e.keyCode == 40) {
-    Pin14&=8; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-    
-    
-// left
- if (e.keyCode == 37) {
-    Pin14&=2; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-// right
- if (e.keyCode == 39) {
-    Pin14&=1; 
-    MEMW(_IF_,RegIF|16);
-    e.preventDefault();
-}
-
-
-return;
+  }
 }
 
 function Start_Input() {
-  document.onkeydown = OnKeyDown;
-  document.onkeyup = OnKeyUp;
+  document.onkeydown = OnKeyDown_Event;
+  document.onkeyup = OnKeyUp_Event;
   Pin14=0xEF;
   Pin15=0xDF;
 }  

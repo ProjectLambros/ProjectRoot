@@ -54,6 +54,15 @@ margin-right: 13%;
     position:relative;
 }     
 
+.header {
+font-size:250%;
+color: #D8D8D8;
+font-family:"Monospace",Lucida Console;
+text-shadow: 4px 4px 1px #848484;
+
+}
+
+
 .center {
  text-align: center;
  float: center;

@@ -51,7 +51,7 @@ function OnKeyDown_Event(e) {
 function OnKeyUp_Event(e) {
     if (e.keyCode == 27) {
          exitFullscreen();
-	 document.getElementById("screen").style.top="-495px";
+	 document.getElementById("screen").style.top="-492px";
        }
   switch (e.which) {
     // down
